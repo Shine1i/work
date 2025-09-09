@@ -38,8 +38,8 @@ export function StatBadge({
     >
       <motion.div
         // gentle float loop; disabled by prefers-reduced-motion automatically by motion
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay }}
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay }}
       >
         <Card
           className={cn(

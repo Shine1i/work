@@ -11,7 +11,7 @@ export function HeroSection({ className }: { className?: string }) {
   const headlineId = "hero-title";
 
   return (
-    <section className={cn("relative isolate overflow-hidden bg-background text-foreground", className)}>
+    <section className={cn("relative isolate overflow-hidden bg-background text-foreground h-dvh", className)}>
       {/* Background grid */}
       <div className="absolute inset-0 -z-10">
         <AnimatedGridPattern
@@ -52,45 +52,46 @@ export function HeroSection({ className }: { className?: string }) {
 
         <SearchForm labelledById={headlineId} className="mt-8 sm:mt-10" />
 
-        {/* Floating stat badges on md+ screens; stack below on mobile */}
-        <div className="relative mt-6">
-          {/* absolute placements */}
+        {/* Mobile fallback: show a tidy grid below on small screens */}
+        <div className="mt-4 grid grid-cols-2 gap-3 md:hidden">
+          <StatBadge label="Total jobs" value="182,300" icon={<Briefcase className="size-4" />} />
+          <StatBadge label="Entry-level" value="48,920" icon={<GraduationCap className="size-4" />} />
+          <StatBadge label="AI classified" value="120,450" icon={<Sparkles className="size-4" />} />
+          <StatBadge label="Avg stegEtt" value="0.73" icon={<Gauge className="size-4" />} />
+        </div>
+      </div>
+
+      {/* Overlayed floating badges on md+ screens (anchored to section) */}
+      <div className="pointer-events-none absolute inset-0 hidden md:block">
+        <div className="relative mx-auto h-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <StatBadge
             label="Total jobs"
             value="182,300"
             icon={<Briefcase className="size-4" />}
-            positionClassName="hidden md:block top-10 -left-10"
+            positionClassName="top-24 left-4"
             delay={0.2}
           />
           <StatBadge
             label="Entry-level"
             value="48,920"
             icon={<GraduationCap className="size-4" />}
-            positionClassName="hidden md:block top-28 -right-12"
+            positionClassName="top-24 right-4"
             delay={0.3}
           />
           <StatBadge
             label="AI classified"
             value="120,450"
             icon={<Sparkles className="size-4" />}
-            positionClassName="hidden md:block bottom-40 -left-12"
+            positionClassName="top-[58%] left-6"
             delay={0.35}
           />
           <StatBadge
             label="Avg stegEtt score"
             value="0.73"
             icon={<Gauge className="size-4" />}
-            positionClassName="hidden md:block bottom-16 -right-16"
+            positionClassName="top-[60%] right-6"
             delay={0.4}
           />
-
-          {/* Mobile fallback: show a tidy grid below */}
-          <div className="mt-4 grid grid-cols-2 gap-3 md:hidden">
-            <StatBadge label="Total jobs" value="182,300" icon={<Briefcase className="size-4" />} />
-            <StatBadge label="Entry-level" value="48,920" icon={<GraduationCap className="size-4" />} />
-            <StatBadge label="AI classified" value="120,450" icon={<Sparkles className="size-4" />} />
-            <StatBadge label="Avg stegEtt" value="0.73" icon={<Gauge className="size-4" />} />
-          </div>
         </div>
       </div>
     </section>
