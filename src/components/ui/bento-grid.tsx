@@ -1,6 +1,6 @@
-import { MotionConfig, motion } from "motion/react";
-import { Briefcase, Sparkles, GraduationCap, BarChart3, FileText, Building2 } from "lucide-react";
-import { Card } from "~/components/ui/card";
+import { BarChart3, Briefcase, Building2, FileText, GraduationCap } from "lucide-react";
+import { motion } from "motion/react";
+import { MagicCard } from "~/components/magicui/magic-card";
 import { cn } from "~/lib/utils";
 
 export function BentoGrid({ className }: { className?: string }) {
@@ -9,53 +9,74 @@ export function BentoGrid({ className }: { className?: string }) {
       title: "Biggest job pool",
       desc: "Aggregate listings from many platforms into one fast search.",
       icon: <Briefcase className="size-5" />,
-      className: "col-span-12 md:col-span-6 lg:col-span-4 bg-secondary",
+      span: "col-span-12 md:col-span-6 lg:col-span-7",
+      from: "var(--primary)",
+      to: "var(--ring)",
     },
     {
       title: "AI resume + cover letter",
-      desc: "Get tailored drafts for every role you apply to.",
+      desc: "Tailored drafts for every role you apply to.",
       icon: <FileText className="size-5" />,
-      className: "col-span-12 md:col-span-6 lg:col-span-4 bg-accent",
+      span: "col-span-12 md:col-span-6 lg:col-span-5",
+      from: "var(--chart-4)",
+      to: "var(--chart-5)",
     },
     {
-      title: "Entry‑level friendly filters",
-      desc: "Hide years-of-experience traps and find true starter roles.",
+      title: "Entry‑level friendly",
+      desc: "Hide years‑of‑experience traps and surface starter roles.",
       icon: <GraduationCap className="size-5" />,
-      className: "col-span-12 md:col-span-12 lg:col-span-4 bg-secondary",
+      span: "col-span-12 md:col-span-6 lg:col-span-4",
+      from: "var(--secondary)",
+      to: "var(--accent)",
     },
     {
       title: "Smart match signal",
       desc: "Use stegEtt score to quickly gauge fit before you apply.",
       icon: <BarChart3 className="size-5" />,
-      className: "col-span-12 md:col-span-6 lg:col-span-6 bg-card",
+      span: "col-span-12 md:col-span-6 lg:col-span-4",
+      from: "var(--chart-2)",
+      to: "var(--chart-3)",
     },
     {
       title: "Company insights",
       desc: "Pull key facts, culture notes, and interview tips instantly.",
       icon: <Building2 className="size-5" />,
-      className: "col-span-12 md:col-span-6 lg:col-span-6 bg-card",
+      span: "col-span-12 md:col-span-12 lg:col-span-4",
+      from: "var(--muted)",
+      to: "var(--primary)",
     },
   ];
 
   return (
-    <section id="features" className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)}>
-      <div className="grid grid-cols-12 gap-4">
+    <section
+      id="features"
+      className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)}
+    >
+      <div className="grid auto-rows-[1fr] grid-cols-12 gap-4">
         {items.map((it, idx) => (
           <motion.div
             key={it.title}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5, delay: idx * 0.05 }}
-            className={cn(it.className, "rounded-2xl p-5")}
+            className={cn(it.span)}
           >
-            <Card className="h-full w-full rounded-2xl bg-inherit p-5 shadow-sm">
-              <div className="flex items-center gap-2 text-primary">
-                {it.icon}
-                <h3 className="font-semibold">{it.title}</h3>
+            <MagicCard
+              className="h-full rounded-2xl"
+              gradientFrom={it.from}
+              gradientTo={it.to}
+              gradientColor="color-mix(in oklab, var(--primary) 14%, transparent)"
+              gradientOpacity={0.25}
+            >
+              <div className="flex h-full flex-col justify-between p-5 sm:p-6">
+                <div className="text-primary flex items-center gap-3">
+                  {it.icon}
+                  <h3 className="text-base font-semibold">{it.title}</h3>
+                </div>
+                <p className="text-muted-foreground mt-3 text-sm">{it.desc}</p>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">{it.desc}</p>
-            </Card>
+            </MagicCard>
           </motion.div>
         ))}
       </div>
@@ -67,7 +88,9 @@ export default function Example() {
   return (
     <div className="bg-gray-50 py-24 sm:py-32">
       <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-center text-base/7 font-semibold text-indigo-600">Deploy faster</h2>
+        <h2 className="text-center text-base/7 font-semibold text-indigo-600">
+          Deploy faster
+        </h2>
         <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-gray-950 sm:text-5xl">
           Everything you need to deploy your app
         </p>
@@ -80,7 +103,8 @@ export default function Example() {
                   Mobile friendly
                 </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem
+                  cupidatat commodo.
                 </p>
               </div>
               <div className="@container relative min-h-120 w-full grow max-lg:mx-auto max-lg:max-w-sm">
@@ -99,9 +123,12 @@ export default function Example() {
             <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-t-4xl" />
             <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
               <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Performance</p>
+                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">
+                  Performance
+                </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit maiores impedit.
+                  Lorem ipsum, dolor sit amet consectetur adipisicing elit maiores
+                  impedit.
                 </p>
               </div>
               <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
@@ -118,9 +145,12 @@ export default function Example() {
             <div className="absolute inset-px rounded-lg bg-white" />
             <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
               <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">Security</p>
+                <p className="mt-2 text-lg font-medium tracking-tight text-gray-950 max-lg:text-center">
+                  Security
+                </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse semper morbi.
+                  Morbi viverra dui mi arcu sed. Tellus semper adipiscing suspendisse
+                  semper morbi.
                 </p>
               </div>
               <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
@@ -141,7 +171,8 @@ export default function Example() {
                   Powerful APIs
                 </p>
                 <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                  Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget sem sodales gravida.
+                  Sit quis amet rutrum tellus ullamcorper ultricies libero dolor eget sem
+                  sodales gravida.
                 </p>
               </div>
               <div className="relative min-h-120 w-full grow">
@@ -163,5 +194,5 @@ export default function Example() {
         </div>
       </div>
     </div>
-  )
+  );
 }

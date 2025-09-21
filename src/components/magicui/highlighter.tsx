@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { useInView } from "motion/react";
-import { annotate } from "rough-notation";
 import type React from "react";
+import { useEffect, useRef } from "react";
+import { annotate } from "rough-notation";
 
 type AnnotationAction =
   | "highlight"

@@ -1,13 +1,13 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Suspense } from "react";
+import { HeroSection } from "~/components/hero/HeroSection";
 import { SignOutButton } from "~/components/sign-out-button";
 import { ThemeToggle } from "~/components/theme-toggle";
-import { Button } from "~/components/ui/button";
-import { authQueryOptions } from "~/lib/auth/queries";
-import { HeroSection } from "~/components/hero/HeroSection";
-import { Navbar } from "~/components/ui/navbar";
 import { BentoGrid } from "~/components/ui/bento-grid";
+import { Button } from "~/components/ui/button";
+import { Navbar } from "~/components/ui/navbar";
+import { authQueryOptions } from "~/lib/auth/queries";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -24,7 +24,7 @@ function HomePage() {
       <BentoGrid className="pb-14" />
 
       {/* Keep existing quick links / theme toggle + auth actions */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-3">
           <div className="flex items-center gap-3">
             <a

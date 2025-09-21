@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
 import { ThemeToggle } from "~/components/theme-toggle";
+import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
 export function Navbar({ className }: { className?: string }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full border-b border-border/50 bg-transparent",
+        "border-border/50 sticky top-0 z-40 w-full border-b bg-transparent",
         // blur only, no background fill
         "supports-[backdrop-filter]:backdrop-blur-sm",
         className,
@@ -19,10 +19,16 @@ export function Navbar({ className }: { className?: string }) {
             <span className="text-foreground">Job</span>
             <span className="text-primary">Pool</span>
           </Link>
-          <div className="hidden sm:flex items-center gap-4 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">Jobs</Link>
-            <a href="#features" className="hover:text-foreground">Features</a>
-            <a href="#how-it-works" className="hover:text-foreground">How it works</a>
+          <div className="text-muted-foreground hidden items-center gap-4 text-sm sm:flex">
+            <Link to="/" className="hover:text-foreground">
+              Jobs
+            </Link>
+            <a href="#features" className="hover:text-foreground">
+              Features
+            </a>
+            <a href="#how-it-works" className="hover:text-foreground">
+              How it works
+            </a>
           </div>
         </div>
 
@@ -39,4 +45,3 @@ export function Navbar({ className }: { className?: string }) {
     </header>
   );
 }
-

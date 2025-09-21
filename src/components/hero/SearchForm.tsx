@@ -1,8 +1,14 @@
-import { useState, type FormEvent } from "react";
+import { MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { motion } from "motion/react";
-import { Search, SlidersHorizontal, MapPin } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 import { PulsatingButton } from "~/components/magicui/pulsating-button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import {
@@ -12,12 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "~/components/ui/accordion";
 import { cn } from "~/lib/utils";
 
 export type SearchFormValues = {
@@ -52,7 +52,7 @@ export function SearchForm({
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const payload: SearchFormValues = Object.fromEntries(
-      Array.from(fd.entries()).map(([k, v]) => [k, String(v)])
+      Array.from(fd.entries()).map(([k, v]) => [k, String(v)]),
     ) as SearchFormValues;
 
     // include controlled selects (mirrored via hidden inputs, but keep it explicit)
@@ -73,7 +73,7 @@ export function SearchForm({
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={cn(className)}
     >
-      <Card className="mx-auto w-full max-w-5xl rounded-2xl border shadow-sm backdrop-blur-sm bg-background/70 dark:bg-background/50">
+      <Card className="bg-background/70 dark:bg-background/50 mx-auto w-full max-w-5xl rounded-2xl border shadow-sm backdrop-blur-sm">
         <CardContent className="p-4 sm:p-6">
           <form
             role="search"
@@ -83,42 +83,55 @@ export function SearchForm({
           >
             {/* Primary row: compact pill with separators and icons */}
             <div className="flex flex-col gap-3">
-              <div className="flex items-stretch gap-2 rounded-full border bg-background/70 dark:bg-background/40 p-1 shadow-xs">
+              <div className="bg-background/70 dark:bg-background/40 flex flex-col items-stretch gap-2 rounded-xl border p-2 shadow-xs md:flex-row md:rounded-full md:p-1">
                 {/* Keyword */}
-                <div className="relative flex-1 min-w-0">
-                  <label htmlFor="q" className="sr-only">Job title or keyword</label>
-                  <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <div className="relative min-w-0 flex-1">
+                  <label htmlFor="q" className="sr-only">
+                    Job title or keyword
+                  </label>
+                  <Search
+                    aria-hidden
+                    className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+                  />
                   <Input
                     id="q"
                     name="q"
                     placeholder="Job title or keyword"
                     autoComplete="off"
-                    className="h-12 rounded-full  pl-9 focus-visible:ring-0"
+                    className="h-12 rounded-full pl-9 focus-visible:ring-0"
                   />
                 </div>
 
-                <div className="hidden md:block w-px self-stretch bg-border/70" />
+                <div className="bg-border/70 hidden w-px self-stretch md:block" />
 
                 {/* Location */}
-                <div className="relative flex-1 min-w-0">
-                  <label htmlFor="location" className="sr-only">Location</label>
-                  <MapPin aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <div className="relative min-w-0 flex-1">
+                  <label htmlFor="location" className="sr-only">
+                    Location
+                  </label>
+                  <MapPin
+                    aria-hidden
+                    className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+                  />
                   <Input
                     id="location"
                     name="location"
                     placeholder="City, country, or remote"
                     autoComplete="off"
-                    className="h-12 rounded-full  bg-transparent pl-9 focus-visible:ring-0"
+                    className="h-12 rounded-full bg-transparent pl-9 focus-visible:ring-0"
                   />
                 </div>
 
-                <div className="hidden md:block w-px self-stretch bg-border/70" />
+                <div className="bg-border/70 hidden w-px self-stretch md:block" />
 
                 {/* Experience Level */}
-                <div className="min-w-[180px] md:min-w-[220px]">
+                <div className="w-full md:flex-none md:w-[220px] min-w-0">
                   <label className="sr-only">Experience level</label>
                   <Select value={experienceLevel} onValueChange={setExperienceLevel}>
-                    <SelectTrigger aria-label="Experience level" className="h-12 w-full justify-between rounded-full border-0 bg-transparent">
+                    <SelectTrigger
+                      aria-label="Experience level"
+                      className="h-12 w-full justify-between rounded-full border-0 bg-transparent !h-12 text-base md:text-sm"
+                    >
                       <SelectValue placeholder="Any" />
                     </SelectTrigger>
                     <SelectContent>
@@ -135,7 +148,7 @@ export function SearchForm({
                 <PulsatingButton
                   type="submit"
                   aria-label="Search jobs"
-                  className="h-12 rounded-full px-6"
+                  className="h-12 w-full justify-center rounded-full px-6 md:w-auto"
                 >
                   <div className="inline-flex items-center gap-2">
                     <Search className="size-4" />
@@ -156,13 +169,15 @@ export function SearchForm({
                 <AccordionContent>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="text-sm text-muted-foreground">Employment type</label>
+                      <label className="text-muted-foreground text-sm">
+                        Employment type
+                      </label>
                       <Select value={employmentType} onValueChange={setEmploymentType}>
                         <SelectTrigger aria-label="Employment type" className="mt-1">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="any">Any</SelectItem>
                           <SelectItem value="full_time">Full-time</SelectItem>
                           <SelectItem value="part_time">Part-time</SelectItem>
                           <SelectItem value="contract">Contract</SelectItem>
@@ -170,11 +185,18 @@ export function SearchForm({
                           <SelectItem value="temporary">Temporary</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="employment_type" value={employmentType} />
+                      <input
+                        type="hidden"
+                        name="employment_type"
+                        value={employmentType}
+                      />
                     </div>
 
                     <div>
-                      <label htmlFor="required_experience_years_min" className="text-sm text-muted-foreground">
+                      <label
+                        htmlFor="required_experience_years_min"
+                        className="text-muted-foreground text-sm"
+                      >
                         Min. years of experience
                       </label>
                       <Input
@@ -189,13 +211,15 @@ export function SearchForm({
                     </div>
 
                     <div>
-                      <label className="text-sm text-muted-foreground">Company size</label>
+                      <label className="text-muted-foreground text-sm">
+                        Company size
+                      </label>
                       <Select value={companySize} onValueChange={setCompanySize}>
                         <SelectTrigger aria-label="Company size" className="mt-1">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="any">Any</SelectItem>
                           <SelectItem value="small">Small</SelectItem>
                           <SelectItem value="medium">Medium</SelectItem>
                           <SelectItem value="large">Large</SelectItem>
@@ -205,43 +229,67 @@ export function SearchForm({
                     </div>
 
                     <div>
-                      <label htmlFor="company" className="text-sm text-muted-foreground">
+                      <label htmlFor="company" className="text-muted-foreground text-sm">
                         Company
                       </label>
-                      <Input id="company" name="company" placeholder="Optional" className="mt-1" />
+                      <Input
+                        id="company"
+                        name="company"
+                        placeholder="Optional"
+                        className="mt-1"
+                      />
                     </div>
 
                     <div>
-                      <label htmlFor="occupation" className="text-sm text-muted-foreground">
+                      <label
+                        htmlFor="occupation"
+                        className="text-muted-foreground text-sm"
+                      >
                         Occupation
                       </label>
-                      <Input id="occupation" name="occupation" placeholder="Optional" className="mt-1" />
+                      <Input
+                        id="occupation"
+                        name="occupation"
+                        placeholder="Optional"
+                        className="mt-1"
+                      />
                     </div>
 
                     <div>
-                      <label className="text-sm text-muted-foreground">Interaction level</label>
-                      <Select value={interactionLevel} onValueChange={setInteractionLevel}>
+                      <label className="text-muted-foreground text-sm">
+                        Interaction level
+                      </label>
+                      <Select
+                        value={interactionLevel}
+                        onValueChange={setInteractionLevel}
+                      >
                         <SelectTrigger aria-label="Interaction level" className="mt-1">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="any">Any</SelectItem>
                           <SelectItem value="on_site">On-site</SelectItem>
                           <SelectItem value="hybrid">Hybrid</SelectItem>
                           <SelectItem value="remote">Remote</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="interaction_level" value={interactionLevel} />
+                      <input
+                        type="hidden"
+                        name="interaction_level"
+                        value={interactionLevel}
+                      />
                     </div>
 
                     <div>
-                      <label className="text-sm text-muted-foreground">Language level</label>
+                      <label className="text-muted-foreground text-sm">
+                        Language level
+                      </label>
                       <Select value={languageLevel} onValueChange={setLanguageLevel}>
                         <SelectTrigger aria-label="Language level" className="mt-1">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="any">Any</SelectItem>
                           <SelectItem value="basic">Basic</SelectItem>
                           <SelectItem value="intermediate">Intermediate</SelectItem>
                           <SelectItem value="advanced">Advanced</SelectItem>
@@ -252,14 +300,22 @@ export function SearchForm({
                     </div>
 
                     <div>
-                      <label htmlFor="ai_tags" className="text-sm text-muted-foreground">
+                      <label htmlFor="ai_tags" className="text-muted-foreground text-sm">
                         AI tags (partial match)
                       </label>
-                      <Input id="ai_tags" name="ai_tags" placeholder="e.g. junior, entry, internship" className="mt-1" />
+                      <Input
+                        id="ai_tags"
+                        name="ai_tags"
+                        placeholder="e.g. junior, entry, internship"
+                        className="mt-1"
+                      />
                     </div>
 
                     <div>
-                      <label htmlFor="steg_score" className="text-sm text-muted-foreground">
+                      <label
+                        htmlFor="steg_score"
+                        className="text-muted-foreground text-sm"
+                      >
                         stegEtt overall score min (0–1)
                       </label>
                       <Input
@@ -277,7 +333,6 @@ export function SearchForm({
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-
           </form>
         </CardContent>
       </Card>

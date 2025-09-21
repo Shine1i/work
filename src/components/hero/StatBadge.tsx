@@ -44,11 +44,11 @@ export function StatBadge({
         <Card
           className={cn(
             // glassy surface
-            "backdrop-blur-sm bg-background/60 dark:bg-background/40 border-border/50 shadow-sm",
+            "bg-background/60 dark:bg-background/40 border-border/50 shadow-sm backdrop-blur-sm",
             // compact layout
-            "px-4 py-3 flex items-center gap-3 rounded-xl",
+            "flex items-center gap-3 rounded-xl px-4 py-3",
             // hover lift on md+
-            "md:hover:shadow-md md:hover:-translate-y-0.5 transition",
+            "transition md:hover:-translate-y-0.5 md:hover:shadow-md",
             className,
           )}
         >
@@ -66,9 +66,7 @@ export function StatBadge({
             {isLoading ? (
               <Skeleton className="mt-1 h-5 w-24" />
             ) : (
-              <span className="text-sm font-semibold leading-none mt-1">
-                {value}
-              </span>
+              <span className="mt-1 text-sm leading-none font-semibold">{value}</span>
             )}
           </div>
         </Card>
