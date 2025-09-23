@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import { HeroSection } from "~/components/hero/HeroSection";
 import { SignOutButton } from "~/components/sign-out-button";
 import { ThemeToggle } from "~/components/theme-toggle";
-import { BentoGrid } from "~/components/ui/bento-grid";
 import { Button } from "~/components/ui/button";
 import { Navbar } from "~/components/ui/navbar";
 import { authQueryOptions } from "~/lib/auth/queries";
@@ -20,8 +19,6 @@ function HomePage() {
       {/* Landing hero */}
       <HeroSection />
 
-      {/* Feature bento grid */}
-      <BentoGrid className="pb-14" />
 
       {/* Keep existing quick links / theme toggle + auth actions */}
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
