@@ -16,7 +16,7 @@ export function HeroSection({ className }: { className?: string }) {
     >
       <HeroBackground />
 
-      <div className="mx-auto max-w-7xl px-4 pt-32 pb-12 sm:px-6 sm:pt-40 sm:pb-20 lg:px-8 lg:pt-48">
+      <div className="mx-auto flex min-h-full max-w-7xl flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <HeroContent headlineId={headlineId} />
         <SearchForm labelledById={headlineId} className="mt-8 sm:mt-10" />
       </div>

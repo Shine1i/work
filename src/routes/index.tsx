@@ -4,9 +4,17 @@ import { ThemeToggle } from "~/components/theme-toggle";
 import { landingNavConfig, landingNavItems } from "~/config/navigation";
 import { UserStatus } from "~/features/auth/UserStatus";
 import { HeroSection } from "~/features/hero/HeroSection";
+import { BentoSection } from "~/features/landing/BentoSection";
+import { PopularCategories } from "~/features/landing/PopularCategories";
+import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
+import { recentJobsQueryOptions } from "~/lib/jobs/queries";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: ({ context }) => {
+    // Prefetch jobs data for SSR
+    context.queryClient.prefetchQuery(recentJobsQueryOptions());
+  },
   component: HomePage,
 });
 
@@ -21,6 +29,11 @@ function HomePage() {
         buttonTextColor={landingNavConfig.buttonTextColor}
       />
       <HeroSection />
+      <BentoSection />
+      <PopularCategories />
+      <Suspense fallback={<div className="py-12 text-center">Loading jobs...</div>}>
+        <RecentJobs />
+      </Suspense>
 
       {/* Quick links / theme toggle + auth status */}
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
