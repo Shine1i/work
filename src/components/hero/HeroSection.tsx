@@ -44,7 +44,7 @@ export function HeroSection({ className }: { className?: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: "easeOut" }}
           >
-            Beat the bots. Get hired faster.
+            Your all-in-one job search hub
           </motion.h1>
 
           <motion.p
@@ -53,15 +53,14 @@ export function HeroSection({ className }: { className?: string }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
           >
-            The{" "}
+            Search{" "}
             <Highlighter action="underline" color="#FF9800">
-              biggest job pool
+              thousands of jobs
             </Highlighter>{" "}
-            in one search. Built for starters — and we use AI to{" "}
+            in one place. No experience? Bad at resumes? Struggling to find the right fit?{" "}
             <Highlighter action="highlight" color="#87CEFA">
-              write your CV
-            </Highlighter>{" "}
-            and apply.
+              We've got you covered.
+            </Highlighter>
           </motion.p>
         </div>
 

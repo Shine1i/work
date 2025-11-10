@@ -28,9 +28,11 @@ export type SearchFormValues = {
   required_experience_years_min?: string;
   company?: string;
   occupation?: string;
-  interaction_level?: string;
+  location_flexibility?: string;
   company_size?: string;
   language_level?: string;
+  application_process_type?: string;
+  growth_potential?: string;
   ai_tags?: string;
   stegett_overall_score_min?: string;
 };
@@ -45,8 +47,10 @@ export function SearchForm({
   const [employmentType, setEmploymentType] = useState<string>("any");
   const [experienceLevel, setExperienceLevel] = useState<string>("any");
   const [companySize, setCompanySize] = useState<string>("any");
-  const [interactionLevel, setInteractionLevel] = useState<string>("any");
+  const [locationFlexibility, setLocationFlexibility] = useState<string>("any");
   const [languageLevel, setLanguageLevel] = useState<string>("any");
+  const [applicationProcessType, setApplicationProcessType] = useState<string>("any");
+  const [growthPotential, setGrowthPotential] = useState<string>("any");
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,8 +63,10 @@ export function SearchForm({
     payload.employment_type = employmentType;
     payload.experience_level = experienceLevel;
     payload.company_size = companySize;
-    payload.interaction_level = interactionLevel;
+    payload.location_flexibility = locationFlexibility;
     payload.language_level = languageLevel;
+    payload.application_process_type = applicationProcessType;
+    payload.growth_potential = growthPotential;
 
     // UI only for now
     console.log("searchFormSubmit", payload);
@@ -83,7 +89,7 @@ export function SearchForm({
           >
             {/* Primary row: compact pill with separators and icons */}
             <div className="flex flex-col gap-3">
-              <div className="bg-background/70 dark:bg-background/40 flex flex-col items-stretch gap-2 rounded-xl border p-2 shadow-xs md:flex-row md:rounded-full md:p-1">
+              <div className="bg-background/80 dark:bg-background/50 flex flex-col items-stretch gap-2 rounded-xl border-2 border-border/60 p-2 shadow-sm md:flex-row md:rounded-full md:p-1.5">
                 {/* Keyword */}
                 <div className="relative min-w-0 flex-1">
                   <label htmlFor="q" className="sr-only">
@@ -98,11 +104,11 @@ export function SearchForm({
                     name="q"
                     placeholder="Job title or keyword"
                     autoComplete="off"
-                    className="h-12 rounded-full pl-9 focus-visible:ring-0"
+                    className="h-12 rounded-full border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
                 </div>
 
-                <div className="bg-border/70 hidden w-px self-stretch md:block" />
+                <div className="bg-border hidden w-px self-stretch md:block" />
 
                 {/* Location */}
                 <div className="relative min-w-0 flex-1">
@@ -118,28 +124,28 @@ export function SearchForm({
                     name="location"
                     placeholder="City, country, or remote"
                     autoComplete="off"
-                    className="h-12 rounded-full bg-transparent pl-9 focus-visible:ring-0"
+                    className="h-12 rounded-full border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
                 </div>
 
-                <div className="bg-border/70 hidden w-px self-stretch md:block" />
+                <div className="bg-border hidden w-px self-stretch md:block" />
 
                 {/* Experience Level */}
-                <div className="w-full md:flex-none md:w-[220px] min-w-0">
+                <div className="w-full min-w-0 md:w-[220px] md:flex-none">
                   <label className="sr-only">Experience level</label>
                   <Select value={experienceLevel} onValueChange={setExperienceLevel}>
                     <SelectTrigger
                       aria-label="Experience level"
-                      className="h-12 w-full justify-between rounded-full border-0 bg-transparent !h-12 text-base md:text-sm"
+                      className="!h-12 w-full justify-between rounded-full border-border/50 bg-transparent px-4 py-0 text-base focus:ring-1 focus:ring-ring md:text-sm"
                     >
-                      <SelectValue placeholder="Any" />
+                      <SelectValue placeholder="Any level" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="any">Any</SelectItem>
+                      <SelectItem value="any">Any level</SelectItem>
                       <SelectItem value="true_entry_level">True entry level</SelectItem>
                       <SelectItem value="low_experience">Low experience</SelectItem>
-                      <SelectItem value="mid">Mid</SelectItem>
-                      <SelectItem value="senior">Senior</SelectItem>
+                      <SelectItem value="experience_required">Experience required</SelectItem>
+                      <SelectItem value="internship">Internship</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -167,13 +173,14 @@ export function SearchForm({
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {/* Employment Type */}
                     <div>
-                      <label className="text-muted-foreground text-sm">
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Employment type
                       </label>
                       <Select value={employmentType} onValueChange={setEmploymentType}>
-                        <SelectTrigger aria-label="Employment type" className="mt-1">
+                        <SelectTrigger aria-label="Employment type" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
@@ -185,41 +192,40 @@ export function SearchForm({
                           <SelectItem value="temporary">Temporary</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input
-                        type="hidden"
-                        name="employment_type"
-                        value={employmentType}
-                      />
+                      <input type="hidden" name="employment_type" value={employmentType} />
                     </div>
 
+                    {/* Location Flexibility */}
                     <div>
-                      <label
-                        htmlFor="required_experience_years_min"
-                        className="text-muted-foreground text-sm"
-                      >
-                        Min. years of experience
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Work location
                       </label>
-                      <Input
-                        id="required_experience_years_min"
-                        name="required_experience_years_min"
-                        type="number"
-                        min={0}
-                        step={1}
-                        placeholder="0"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-muted-foreground text-sm">
-                        Company size
-                      </label>
-                      <Select value={companySize} onValueChange={setCompanySize}>
-                        <SelectTrigger aria-label="Company size" className="mt-1">
+                      <Select value={locationFlexibility} onValueChange={setLocationFlexibility}>
+                        <SelectTrigger aria-label="Location flexibility" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="on_site_only">On-site only</SelectItem>
+                          <SelectItem value="hybrid">Hybrid</SelectItem>
+                          <SelectItem value="full_remote">Full remote</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <input type="hidden" name="location_flexibility" value={locationFlexibility} />
+                    </div>
+
+                    {/* Company Size */}
+                    <div>
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Company size
+                      </label>
+                      <Select value={companySize} onValueChange={setCompanySize}>
+                        <SelectTrigger aria-label="Company size" className="h-10 border-border/60">
+                          <SelectValue placeholder="Any" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="startup">Startup</SelectItem>
                           <SelectItem value="small">Small</SelectItem>
                           <SelectItem value="medium">Medium</SelectItem>
                           <SelectItem value="large">Large</SelectItem>
@@ -228,95 +234,122 @@ export function SearchForm({
                       <input type="hidden" name="company_size" value={companySize} />
                     </div>
 
+                    {/* Language Level */}
                     <div>
-                      <label htmlFor="company" className="text-muted-foreground text-sm">
-                        Company
-                      </label>
-                      <Input
-                        id="company"
-                        name="company"
-                        placeholder="Optional"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="occupation"
-                        className="text-muted-foreground text-sm"
-                      >
-                        Occupation
-                      </label>
-                      <Input
-                        id="occupation"
-                        name="occupation"
-                        placeholder="Optional"
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-muted-foreground text-sm">
-                        Interaction level
-                      </label>
-                      <Select
-                        value={interactionLevel}
-                        onValueChange={setInteractionLevel}
-                      >
-                        <SelectTrigger aria-label="Interaction level" className="mt-1">
-                          <SelectValue placeholder="Any" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="on_site">On-site</SelectItem>
-                          <SelectItem value="hybrid">Hybrid</SelectItem>
-                          <SelectItem value="remote">Remote</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <input
-                        type="hidden"
-                        name="interaction_level"
-                        value={interactionLevel}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-muted-foreground text-sm">
-                        Language level
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Language requirement
                       </label>
                       <Select value={languageLevel} onValueChange={setLanguageLevel}>
-                        <SelectTrigger aria-label="Language level" className="mt-1">
+                        <SelectTrigger aria-label="Language level" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="basic">Basic</SelectItem>
-                          <SelectItem value="intermediate">Intermediate</SelectItem>
-                          <SelectItem value="advanced">Advanced</SelectItem>
-                          <SelectItem value="native">Native</SelectItem>
+                          <SelectItem value="english_sufficient">English sufficient</SelectItem>
+                          <SelectItem value="swedish_required">Swedish required</SelectItem>
+                          <SelectItem value="bilingual_preferred">Bilingual preferred</SelectItem>
                         </SelectContent>
                       </Select>
                       <input type="hidden" name="language_level" value={languageLevel} />
                     </div>
 
+                    {/* Application Process Type */}
                     <div>
-                      <label htmlFor="ai_tags" className="text-muted-foreground text-sm">
-                        AI tags (partial match)
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Application type
+                      </label>
+                      <Select value={applicationProcessType} onValueChange={setApplicationProcessType}>
+                        <SelectTrigger aria-label="Application process type" className="h-10 border-border/60">
+                          <SelectValue placeholder="Any" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="quick_apply">Quick apply</SelectItem>
+                          <SelectItem value="standard_ats">Standard ATS</SelectItem>
+                          <SelectItem value="complex_ats">Complex ATS</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <input type="hidden" name="application_process_type" value={applicationProcessType} />
+                    </div>
+
+                    {/* Growth Potential */}
+                    <div>
+                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Growth potential
+                      </label>
+                      <Select value={growthPotential} onValueChange={setGrowthPotential}>
+                        <SelectTrigger aria-label="Growth potential" className="h-10 border-border/60">
+                          <SelectValue placeholder="Any" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="any">Any</SelectItem>
+                          <SelectItem value="high">High</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="low">Low</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <input type="hidden" name="growth_potential" value={growthPotential} />
+                    </div>
+
+                    {/* Company Name */}
+                    <div>
+                      <label htmlFor="company" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Company name
+                      </label>
+                      <Input
+                        id="company"
+                        name="company"
+                        placeholder="e.g. Google, Spotify"
+                        className="h-10 border-border/60"
+                      />
+                    </div>
+
+                    {/* Occupation */}
+                    <div>
+                      <label htmlFor="occupation" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Occupation
+                      </label>
+                      <Input
+                        id="occupation"
+                        name="occupation"
+                        placeholder="e.g. Developer, Designer"
+                        className="h-10 border-border/60"
+                      />
+                    </div>
+
+                    {/* Min Years Experience */}
+                    <div>
+                      <label htmlFor="required_experience_years_min" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Min. years experience
+                      </label>
+                      <Input
+                        id="required_experience_years_min"
+                        name="required_experience_years_min"
+                        type="number"
+                        min={0}
+                        step={1}
+                        placeholder="0"
+                        className="h-10 border-border/60"
+                      />
+                    </div>
+
+                    {/* AI Tags */}
+                    <div>
+                      <label htmlFor="ai_tags" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        AI tags
                       </label>
                       <Input
                         id="ai_tags"
                         name="ai_tags"
-                        placeholder="e.g. junior, entry, internship"
-                        className="mt-1"
+                        placeholder="e.g. junior, entry"
+                        className="h-10 border-border/60"
                       />
                     </div>
 
+                    {/* StegEtt Score */}
                     <div>
-                      <label
-                        htmlFor="steg_score"
-                        className="text-muted-foreground text-sm"
-                      >
-                        stegEtt overall score min (0–1)
+                      <label htmlFor="steg_score" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Min. stegEtt score (0–1)
                       </label>
                       <Input
                         id="steg_score"
@@ -326,7 +359,7 @@ export function SearchForm({
                         max={1}
                         step={0.01}
                         placeholder="0.5"
-                        className="mt-1"
+                        className="h-10 border-border/60"
                       />
                     </div>
                   </div>
