@@ -37,6 +37,16 @@ export type SearchFormValues = {
   stegett_overall_score_min?: string;
 };
 
+interface FilterState {
+  employmentType: string;
+  experienceLevel: string;
+  companySize: string;
+  locationFlexibility: string;
+  languageLevel: string;
+  applicationProcessType: string;
+  growthPotential: string;
+}
+
 export function SearchForm({
   className,
   labelledById,
@@ -44,13 +54,19 @@ export function SearchForm({
   className?: string;
   labelledById?: string;
 }) {
-  const [employmentType, setEmploymentType] = useState<string>("any");
-  const [experienceLevel, setExperienceLevel] = useState<string>("any");
-  const [companySize, setCompanySize] = useState<string>("any");
-  const [locationFlexibility, setLocationFlexibility] = useState<string>("any");
-  const [languageLevel, setLanguageLevel] = useState<string>("any");
-  const [applicationProcessType, setApplicationProcessType] = useState<string>("any");
-  const [growthPotential, setGrowthPotential] = useState<string>("any");
+  const [filters, setFilters] = useState<FilterState>({
+    employmentType: "any",
+    experienceLevel: "any",
+    companySize: "any",
+    locationFlexibility: "any",
+    languageLevel: "any",
+    applicationProcessType: "any",
+    growthPotential: "any",
+  });
+
+  const updateFilter = <K extends keyof FilterState>(key: K, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,14 +75,14 @@ export function SearchForm({
       Array.from(fd.entries()).map(([k, v]) => [k, String(v)]),
     ) as SearchFormValues;
 
-    // include controlled selects (mirrored via hidden inputs, but keep it explicit)
-    payload.employment_type = employmentType;
-    payload.experience_level = experienceLevel;
-    payload.company_size = companySize;
-    payload.location_flexibility = locationFlexibility;
-    payload.language_level = languageLevel;
-    payload.application_process_type = applicationProcessType;
-    payload.growth_potential = growthPotential;
+    // include controlled selects
+    payload.employment_type = filters.employmentType;
+    payload.experience_level = filters.experienceLevel;
+    payload.company_size = filters.companySize;
+    payload.location_flexibility = filters.locationFlexibility;
+    payload.language_level = filters.languageLevel;
+    payload.application_process_type = filters.applicationProcessType;
+    payload.growth_potential = filters.growthPotential;
 
     // UI only for now
     console.log("searchFormSubmit", payload);
@@ -133,7 +149,7 @@ export function SearchForm({
                 {/* Experience Level */}
                 <div className="w-full min-w-0 md:w-[220px] md:flex-none">
                   <label className="sr-only">Experience level</label>
-                  <Select value={experienceLevel} onValueChange={setExperienceLevel}>
+                  <Select value={filters.experienceLevel} onValueChange={(v) => updateFilter("experienceLevel", v)}>
                     <SelectTrigger
                       aria-label="Experience level"
                       className="!h-12 w-full justify-between rounded-full border-border/50 bg-transparent px-4 py-0 text-base focus:ring-1 focus:ring-ring md:text-sm"
@@ -179,7 +195,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Employment type
                       </label>
-                      <Select value={employmentType} onValueChange={setEmploymentType}>
+                      <Select value={filters.employmentType} onValueChange={(v) => updateFilter("employmentType", v)}>
                         <SelectTrigger aria-label="Employment type" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -192,7 +208,7 @@ export function SearchForm({
                           <SelectItem value="temporary">Temporary</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="employment_type" value={employmentType} />
+                      <input type="hidden" name="employment_type" value={filters.employmentType} />
                     </div>
 
                     {/* Location Flexibility */}
@@ -200,7 +216,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Work location
                       </label>
-                      <Select value={locationFlexibility} onValueChange={setLocationFlexibility}>
+                      <Select value={filters.locationFlexibility} onValueChange={(v) => updateFilter("locationFlexibility", v)}>
                         <SelectTrigger aria-label="Location flexibility" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -211,7 +227,7 @@ export function SearchForm({
                           <SelectItem value="full_remote">Full remote</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="location_flexibility" value={locationFlexibility} />
+                      <input type="hidden" name="location_flexibility" value={filters.locationFlexibility} />
                     </div>
 
                     {/* Company Size */}
@@ -219,7 +235,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Company size
                       </label>
-                      <Select value={companySize} onValueChange={setCompanySize}>
+                      <Select value={filters.companySize} onValueChange={(v) => updateFilter("companySize", v)}>
                         <SelectTrigger aria-label="Company size" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -231,7 +247,7 @@ export function SearchForm({
                           <SelectItem value="large">Large</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="company_size" value={companySize} />
+                      <input type="hidden" name="company_size" value={filters.companySize} />
                     </div>
 
                     {/* Language Level */}
@@ -239,7 +255,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Language requirement
                       </label>
-                      <Select value={languageLevel} onValueChange={setLanguageLevel}>
+                      <Select value={filters.languageLevel} onValueChange={(v) => updateFilter("languageLevel", v)}>
                         <SelectTrigger aria-label="Language level" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -250,7 +266,7 @@ export function SearchForm({
                           <SelectItem value="bilingual_preferred">Bilingual preferred</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="language_level" value={languageLevel} />
+                      <input type="hidden" name="language_level" value={filters.languageLevel} />
                     </div>
 
                     {/* Application Process Type */}
@@ -258,7 +274,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Application type
                       </label>
-                      <Select value={applicationProcessType} onValueChange={setApplicationProcessType}>
+                      <Select value={filters.applicationProcessType} onValueChange={(v) => updateFilter("applicationProcessType", v)}>
                         <SelectTrigger aria-label="Application process type" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -269,7 +285,7 @@ export function SearchForm({
                           <SelectItem value="complex_ats">Complex ATS</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="application_process_type" value={applicationProcessType} />
+                      <input type="hidden" name="application_process_type" value={filters.applicationProcessType} />
                     </div>
 
                     {/* Growth Potential */}
@@ -277,7 +293,7 @@ export function SearchForm({
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
                         Growth potential
                       </label>
-                      <Select value={growthPotential} onValueChange={setGrowthPotential}>
+                      <Select value={filters.growthPotential} onValueChange={(v) => updateFilter("growthPotential", v)}>
                         <SelectTrigger aria-label="Growth potential" className="h-10 border-border/60">
                           <SelectValue placeholder="Any" />
                         </SelectTrigger>
@@ -288,7 +304,7 @@ export function SearchForm({
                           <SelectItem value="low">Low</SelectItem>
                         </SelectContent>
                       </Select>
-                      <input type="hidden" name="growth_potential" value={growthPotential} />
+                      <input type="hidden" name="growth_potential" value={filters.growthPotential} />
                     </div>
 
                     {/* Company Name */}
