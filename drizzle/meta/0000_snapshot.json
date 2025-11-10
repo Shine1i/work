@@ -1,0 +1,638 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.alembic_version": {
+      "name": "alembic_version",
+      "schema": "",
+      "columns": {
+        "version_num": {
+          "name": "version_num",
+          "type": "varchar(32)",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "public.companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_logo_url": {
+          "name": "company_logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "website_url": {
+          "name": "website_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "companies_name_key": {
+          "columns": [
+            "name"
+          ],
+          "nullsNotDistinct": false,
+          "name": "companies_name_key"
+        }
+      },
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "public.job_postings": {
+      "name": "job_postings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description_text": {
+          "name": "description_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_text": {
+          "name": "location_text",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employment_type": {
+          "name": "employment_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "occupation": {
+          "name": "occupation",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "positions_to_fill": {
+          "name": "positions_to_fill",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "application_url": {
+          "name": "application_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "application_email": {
+          "name": "application_email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "source_name": {
+          "name": "source_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_job_id": {
+          "name": "source_job_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_url": {
+          "name": "source_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "job_postings_company_id_fkey": {
+          "name": "job_postings_company_id_fkey",
+          "tableFrom": "job_postings",
+          "tableTo": "companies",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "_source_job_uc": {
+          "columns": [
+            "source_name",
+            "source_job_id"
+          ],
+          "nullsNotDistinct": false,
+          "name": "_source_job_uc"
+        },
+        "job_postings_source_url_key": {
+          "columns": [
+            "source_url"
+          ],
+          "nullsNotDistinct": false,
+          "name": "job_postings_source_url_key"
+        }
+      },
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "public.ai_classifications": {
+      "name": "ai_classifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "job_posting_id": {
+          "name": "job_posting_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "experience_level": {
+          "name": "experience_level",
+          "type": "experience_level_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "education_can_replace_experience": {
+          "name": "education_can_replace_experience",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_experience_years_min": {
+          "name": "required_experience_years_min",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "required_experience_years_max": {
+          "name": "required_experience_years_max",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "implicit_requirements": {
+          "name": "implicit_requirements",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "application_process_type": {
+          "name": "application_process_type",
+          "type": "application_process_type_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requires_assessment": {
+          "name": "requires_assessment",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "interaction_level": {
+          "name": "interaction_level",
+          "type": "interaction_level_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cultural_signals": {
+          "name": "cultural_signals",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "growth_potential": {
+          "name": "growth_potential",
+          "type": "growth_potential_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "company_size": {
+          "name": "company_size",
+          "type": "company_size_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "language_level": {
+          "name": "language_level",
+          "type": "language_level_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_flexibility": {
+          "name": "location_flexibility",
+          "type": "location_flexibility_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requires_drivers_license": {
+          "name": "requires_drivers_license",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stegett_overall_score": {
+          "name": "stegett_overall_score",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stegett_reasoning": {
+          "name": "stegett_reasoning",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_tags": {
+          "name": "ai_tags",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "classification_confidence": {
+          "name": "classification_confidence",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model_version": {
+          "name": "model_version",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ai_classifications_job_posting_id_fkey": {
+          "name": "ai_classifications_job_posting_id_fkey",
+          "tableFrom": "ai_classifications",
+          "tableTo": "job_postings",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "job_posting_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "ai_classifications_job_posting_id_key": {
+          "columns": [
+            "job_posting_id"
+          ],
+          "nullsNotDistinct": false,
+          "name": "ai_classifications_job_posting_id_key"
+        }
+      },
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "public.job_runs": {
+      "name": "job_runs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "job_status_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_stage": {
+          "name": "current_stage",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "progress_percentage": {
+          "name": "progress_percentage",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jobs_scraped": {
+          "name": "jobs_scraped",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jobs_inserted": {
+          "name": "jobs_inserted",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jobs_deduplicated": {
+          "name": "jobs_deduplicated",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jobs_classified": {
+          "name": "jobs_classified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_message": {
+          "name": "error_message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "triggered_by": {
+          "name": "triggered_by",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "config_snapshot": {
+          "name": "config_snapshot",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "ix_job_runs_single_running": {
+          "name": "ix_job_runs_single_running",
+          "columns": [
+            {
+              "expression": "status",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "enum_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "where": "(status = 'running'::job_status_enum)",
+          "with": {}
+        },
+        "ix_job_runs_status": {
+          "name": "ix_job_runs_status",
+          "columns": [
+            {
+              "expression": "status",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "enum_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.application_process_type_enum": {
+      "name": "application_process_type_enum",
+      "values": [
+        "quick_apply",
+        "standard_ats",
+        "complex_ats"
+      ],
+      "schema": "public"
+    },
+    "public.company_size_enum": {
+      "name": "company_size_enum",
+      "values": [
+        "startup",
+        "small",
+        "medium",
+        "large",
+        "unknown"
+      ],
+      "schema": "public"
+    },
+    "public.experience_level_enum": {
+      "name": "experience_level_enum",
+      "values": [
+        "true_entry_level",
+        "low_experience",
+        "experience_required",
+        "internship"
+      ],
+      "schema": "public"
+    },
+    "public.growth_potential_enum": {
+      "name": "growth_potential_enum",
+      "values": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "schema": "public"
+    },
+    "public.interaction_level_enum": {
+      "name": "interaction_level_enum",
+      "values": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "schema": "public"
+    },
+    "public.job_status_enum": {
+      "name": "job_status_enum",
+      "values": [
+        "pending",
+        "running",
+        "completed",
+        "failed",
+        "stopped"
+      ],
+      "schema": "public"
+    },
+    "public.language_level_enum": {
+      "name": "language_level_enum",
+      "values": [
+        "swedish_required",
+        "english_sufficient",
+        "bilingual_preferred"
+      ],
+      "schema": "public"
+    },
+    "public.location_flexibility_enum": {
+      "name": "location_flexibility_enum",
+      "values": [
+        "on_site_only",
+        "hybrid",
+        "full_remote",
+        "unknown"
+      ],
+      "schema": "public"
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {
+      "ai_classifications": {
+        "columns": {
+          "implicit_requirements": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "text"
+          },
+          "cultural_signals": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "text"
+          },
+          "ai_tags": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "text"
+          }
+        }
+      }
+    }
+  }
+}
