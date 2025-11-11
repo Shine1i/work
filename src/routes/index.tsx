@@ -38,14 +38,14 @@ function HomePage() {
           <DotGrid
             dotSize={4}
             gap={20}
-            baseColor="#e0e0e0"
+            baseColor="#9ca3af"
             activeColor="#5227FF"
             proximity={120}
             shockRadius={250}
             shockStrength={5}
             resistance={750}
             returnDuration={1.5}
-            className="opacity-20 dark:opacity-10"
+            className="opacity-40 dark:opacity-25"
           />
         </div>
 
