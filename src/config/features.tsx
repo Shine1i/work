@@ -2,11 +2,15 @@ import {
   Briefcase,
   FileText,
   TrendingUp,
-  CheckSquare,
-  GraduationCap,
-  Building2,
+  Database,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import {
+  SmartJobSearchContent,
+  ResumeToolsContent,
+  CareerInsightsContent,
+  JobsDatabaseContent,
+} from "~/features/landing/BentoCardContent";
 
 export interface FeatureCard {
   name: string;
@@ -16,23 +20,25 @@ export interface FeatureCard {
   href: string;
   cta: string;
   className: string;
+  content?: ReactNode;
 }
 
 export const featureCards: FeatureCard[] = [
   {
     name: "Smart Job Search",
-    description: "Search thousands of jobs with advanced filters for experience, location, and more.",
+    description: "Find jobs that actually fit your skills and goals.",
     Icon: Briefcase,
     background: (
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20" />
     ),
     href: "/jobs",
     cta: "Explore Jobs",
-    className: "col-span-1 md:col-span-2",
+    className: "col-span-1 md:col-span-2 lg:col-span-2",
+    content: <SmartJobSearchContent />,
   },
   {
     name: "Resume Tools",
-    description: "Build and optimize your resume with AI-powered suggestions.",
+    description: "Build a resume that stands out to employers.",
     Icon: FileText,
     background: (
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20" />
@@ -40,10 +46,11 @@ export const featureCards: FeatureCard[] = [
     href: "/resume",
     cta: "Build Resume",
     className: "col-span-1",
+    content: <ResumeToolsContent />,
   },
   {
     name: "Career Insights",
-    description: "Get personalized career recommendations based on your skills and goals.",
+    description: "Get tips tailored to your career journey.",
     Icon: TrendingUp,
     background: (
       <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20" />
@@ -51,38 +58,18 @@ export const featureCards: FeatureCard[] = [
     href: "/insights",
     cta: "View Insights",
     className: "col-span-1",
+    content: <CareerInsightsContent />,
   },
   {
-    name: "Application Tracking",
-    description: "Track your applications and follow up at the right time.",
-    Icon: CheckSquare,
+    name: "80,000+ Jobs",
+    description: "Massive job database updated daily with fresh opportunities.",
+    Icon: Database,
     background: (
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20" />
     ),
-    href: "/tracking",
-    cta: "Track Apps",
+    href: "/jobs",
+    cta: "Browse All",
     className: "col-span-1 md:col-span-2",
-  },
-  {
-    name: "Skill Development",
-    description: "Identify skill gaps and find resources to level up your career.",
-    Icon: GraduationCap,
-    background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-amber-500/20" />
-    ),
-    href: "/skills",
-    cta: "Learn More",
-    className: "col-span-1",
-  },
-  {
-    name: "Company Reviews",
-    description: "Read authentic reviews from employees and make informed decisions.",
-    Icon: Building2,
-    background: (
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-rose-500/20" />
-    ),
-    href: "/reviews",
-    cta: "Read Reviews",
-    className: "col-span-1",
+    content: <JobsDatabaseContent />,
   },
 ];
