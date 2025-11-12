@@ -82,7 +82,7 @@ pnpm ui add <component>  # Add shadcn/ui component
 ### Server vs Client Code
 - Use `serverOnly()` wrapper for server-exclusive code (auth, db)
 - Server functions can use middleware via `.middleware([authMiddleware])`
-- Environment validation via `@t3-oss/env-core` in `src/env/server.ts`
+- Environment validation via `@t3-oss/env-core` in `src/config/env/server.ts`
 
 ### Query Integration
 - Router and Query integrated via `setupRouterSsrQueryIntegration` in `router.tsx`
@@ -133,11 +133,92 @@ pnpm ui add <component>  # Add shadcn/ui component
 - Use `createServerFn()` from `@tanstack/react-start`
 - Chain middleware with `.middleware([authMiddleware])` for auth
 
-### Component Organization
-- `src/components/ui/` - shadcn/ui components
-- `src/components/hero/` - landing page components
-- `src/components/magicui/` - animation/UI utilities
-- Theme components: `theme-provider.tsx`, `theme-toggle.tsx`
+### Project Structure
+
+This project follows a feature-based architecture with clear separation of concerns:
+
+```
+src/
+├── routes/              # TanStack Router file-based routing
+│   ├── __root.tsx      # Root layout (replaces app.tsx/provider.tsx in other frameworks)
+│   ├── (authenticated)/ # Protected route group
+│   └── (auth-pages)/   # Auth-related pages (login, signup)
+├── features/           # Feature-based modules (see below)
+│   ├── auth/
+│   │   ├── api/       # Server functions and queries
+│   │   └── components/ # Auth forms and status components
+│   ├── cities/
+│   │   └── api/       # Server functions and queries
+│   ├── companies/
+│   │   └── api/       # Server functions and queries
+│   ├── hero/
+│   │   ├── components/ # Hero section components
+│   │   └── config/    # Stats configuration
+│   ├── jobs/
+│   │   ├── api/       # Server functions and queries
+│   │   └── components/ # Job cards and indicators
+│   ├── landing/
+│   │   ├── components/ # Landing page sections
+│   │   └── config/    # Cities and features configs
+│   └── navigation/
+│       ├── components/ # Navigation components
+│       └── config/    # Navigation configuration
+├── components/         # ONLY shared components
+│   ├── ui/            # shadcn/ui component library
+│   ├── magicui/       # Animation and visual effects
+│   └── app/           # App-level infrastructure (theme, error boundaries, footer)
+├── lib/               # ONLY shared infrastructure
+│   ├── auth/          # Core auth config (auth.ts, middleware.ts, auth-client.ts)
+│   └── db/            # Database connection and schemas
+├── config/
+│   ├── env/           # Environment variable validation
+│   └── categories.tsx # Global configurations
+├── assets/            # Static files (images, fonts)
+├── hooks/             # Shared React hooks
+├── stores/            # Global state management
+├── testing/           # Test utilities and mocks
+├── types/             # Shared TypeScript types
+├── utils/             # Shared utility functions (cn helper)
+└── router.tsx         # Router creation and Query integration
+```
+
+#### Feature Organization
+
+Features are self-contained modules following a consistent structure:
+
+**Feature Structure:**
+```
+features/[feature-name]/
+├── api/              # Server functions (server-functions.ts) and queries (queries.ts)
+├── components/       # Feature-specific components
+├── config/          # Feature-specific configuration files
+├── hooks/           # Feature-specific hooks (if needed)
+├── types/           # Feature-specific types (if needed)
+└── utils/           # Feature-specific utilities (if needed)
+```
+
+**Current Features:**
+- **`features/auth/`** - Authentication with API (queries, server functions) and components (LoginForm, SignupForm, UserStatus, SignOutButton)
+- **`features/cities/`** - City data API (server functions and queries for popular cities)
+- **`features/companies/`** - Company data API (server functions and queries for popular companies)
+- **`features/hero/`** - Landing page hero section with components (HeroSection, SearchForm, etc.) and stats config
+- **`features/jobs/`** - Job listings with API and components (JobCard, ScoreIndicator)
+- **`features/landing/`** - Landing page sections (Bento, Blog, FAQ, CTA, Popular sections) with cities/features configs
+- **`features/navigation/`** - Navigation components (CardNav) with navigation config
+
+**Key Principles:**
+- Feature-specific code (API, components, configs) lives within the feature
+- Shared infrastructure (db, core auth) stays in `lib/`
+- Shared UI components (shadcn, magicui) stay in `components/`
+- API layer: `server-functions.ts` (TanStack Start server functions) + `queries.ts` (TanStack Query options)
+
+#### TanStack Start Differences
+
+Unlike other React frameworks, TanStack Start uses:
+- **`__root.tsx`** instead of `app.tsx` - serves as root layout with providers
+- **No separate `provider.tsx`** - providers are composed directly in `__root.tsx`
+- **`router.tsx`** - router creation with Query integration happens here
+- **File-based routing** in `routes/` with auto-generated `routeTree.gen.ts`
 
 ## Important Files
 

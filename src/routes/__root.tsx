@@ -11,11 +11,11 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import { authQueryOptions, type AuthQueryResult } from "~/lib/auth/queries";
+import { authQueryOptions, type AuthQueryResult } from "~/features/auth/api/queries";
 import appCss from "~/styles.css?url";
 
-import { Footer } from "~/components/Footer";
-import { ThemeProvider } from "~/components/theme-provider";
+import { Footer } from "~/components/app/Footer";
+import { ThemeProvider } from "~/components/app/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 
 export const Route = createRootRouteWithContext<{

@@ -1,21 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
-import { ThemeToggle } from "~/components/theme-toggle";
+import { ThemeToggle } from "~/components/app/theme-toggle";
 import { AnimatedGridPattern } from "~/components/magicui/animated-grid-pattern";
-import { landingNavConfig, landingNavItems } from "~/config/navigation";
-import { UserStatus } from "~/features/auth/UserStatus";
-import { HeroSection } from "~/features/hero/HeroSection";
-import { BentoSection } from "~/features/landing/BentoSection";
-import { BlogSection } from "~/features/landing/BlogSection";
-import { CtaSection } from "~/features/landing/CtaSection";
-import { FaqSection } from "~/features/landing/FaqSection";
-import { PopularCities } from "~/features/landing/PopularCategories";
-import { PopularCompanies } from "~/features/landing/PopularCompanies";
-import { RecentJobs } from "~/features/landing/RecentJobs";
-import CardNav from "~/features/navigation/CardNav";
-import { popularCitiesQueryOptions } from "~/lib/cities/queries";
-import { popularCompaniesQueryOptions } from "~/lib/companies/queries";
-import { recentJobsQueryOptions } from "~/lib/jobs/queries";
+import { landingNavConfig, landingNavItems } from "~/features/navigation/config/config";
+import { UserStatus } from "~/features/auth/components/UserStatus";
+import { HeroSection } from "~/features/hero/components/HeroSection";
+import { BentoSection } from "~/features/landing/components/BentoSection";
+import { BlogSection } from "~/features/landing/components/BlogSection";
+import { CtaSection } from "~/features/landing/components/CtaSection";
+import { FaqSection } from "~/features/landing/components/FaqSection";
+import { PopularCities } from "~/features/landing/components/PopularCategories";
+import { PopularCompanies } from "~/features/landing/components/PopularCompanies";
+import { RecentJobs } from "~/features/landing/components/RecentJobs";
+import CardNav from "~/features/navigation/components/CardNav";
+import { popularCitiesQueryOptions } from "~/features/cities/api/queries";
+import { popularCompaniesQueryOptions } from "~/features/companies/api/queries";
+import { recentJobsQueryOptions } from "~/features/jobs/api/queries";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {

@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react"
 import { ArrowRightIcon } from "@radix-ui/react-icons"
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/utils"
 import { Button } from "~/components/ui/button"
 import { BorderBeam } from "~/components/ui/border-beam"
 

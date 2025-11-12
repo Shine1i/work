@@ -1,0 +1,35 @@
+import { BentoCard, BentoGrid } from "~/components/ui/bento-grid";
+import { featureCards } from "~/features/landing/config/features.config";
+
+export function BentoSection() {
+  return (
+    <section className="py-8 sm:py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 ">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Everything you need for your job search
+          </h2>
+          <p className="text-muted-foreground  mt-3 max-w-2xl text-base sm:text-lg">
+            Streamline your job search with powerful tools and insights
+          </p>
+        </div>
+
+        <BentoGrid className="auto-rows-[16rem] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {featureCards.map((feature) => (
+            <BentoCard
+              key={feature.name}
+              name={feature.name}
+              description={feature.description}
+              Icon={feature.Icon}
+              background={feature.background}
+              href={feature.href}
+              cta={feature.cta}
+              className={feature.className}
+              content={feature.content}
+            />
+          ))}
+        </BentoGrid>
+      </div>
+    </section>
+  );
+}
