@@ -9,7 +9,7 @@ import { BentoSection } from "~/features/landing/BentoSection";
 import { BlogSection } from "~/features/landing/BlogSection";
 import { CtaSection } from "~/features/landing/CtaSection";
 import { FaqSection } from "~/features/landing/FaqSection";
-import { PopularCategories } from "~/features/landing/PopularCategories";
+import { PopularCities } from "~/features/landing/PopularCategories";
 import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
 import { recentJobsQueryOptions } from "~/lib/jobs/queries";
@@ -53,7 +53,7 @@ function HomePage() {
 
         {/* Content with proper z-index */}
         <div className="relative z-10">
-          <PopularCategories />
+          <PopularCities />
           <Suspense fallback={<div className="py-12 text-center">Loading jobs...</div>}>
             <RecentJobs />
           </Suspense>

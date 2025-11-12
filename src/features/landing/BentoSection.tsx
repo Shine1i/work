@@ -5,11 +5,11 @@ export function BentoSection() {
   return (
     <section className="py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
+        <div className="mb-8 ">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Everything you need for your job search
           </h2>
-          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-base sm:text-lg">
+          <p className="text-muted-foreground  mt-3 max-w-2xl text-base sm:text-lg">
             Streamline your job search with powerful tools and insights
           </p>
         </div>

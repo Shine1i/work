@@ -8,11 +8,11 @@ export function RecentJobs() {
   return (
     <section className="py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
+        <div className="mb-8 ">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Recent Entry-Level Jobs
           </h2>
-          <p className="text-muted-foreground mx-auto mt-3 max-w-2xl text-base sm:text-lg">
+          <p className="text-muted-foreground  mt-3 max-w-2xl text-base sm:text-lg">
             Hand-picked opportunities perfect for beginners
           </p>
         </div>
