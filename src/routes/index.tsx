@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { ThemeToggle } from "~/components/theme-toggle";
-import DotGrid from "~/components/DotGrid";
+import { AnimatedGridPattern } from "~/components/magicui/animated-grid-pattern";
 import { landingNavConfig, landingNavItems } from "~/config/navigation";
 import { UserStatus } from "~/features/auth/UserStatus";
 import { HeroSection } from "~/features/hero/HeroSection";
@@ -31,21 +31,22 @@ function HomePage() {
       />
       <HeroSection />
 
-      {/* Rest of the page with DotGrid background */}
-      <div className="relative z-0">
-        {/* DotGrid background - covers entire section after hero */}
-        <div className="pointer-events-none absolute inset-0 z-0">
-          <DotGrid
-            dotSize={4}
-            gap={20}
-            baseColor="#d1d5db"
-            activeColor="#6366f1"
-            proximity={120}
-            shockRadius={250}
-            shockStrength={5}
-            resistance={750}
-            returnDuration={1.5}
-            className="opacity-60 dark:opacity-40"
+      {/* Rest of the page with AnimatedGridPattern background */}
+      <div className="relative z-0 isolate overflow-hidden">
+        {/* AnimatedGridPattern background - covers entire section after hero */}
+        <div className="absolute inset-0 -z-10">
+          <AnimatedGridPattern
+            aria-hidden
+            className="text-foreground/10 [--opacity:0.2]"
+            width={48}
+            height={48}
+            x={-1}
+            y={-1}
+            numSquares={60}
+          />
+          <div
+            aria-hidden
+            className="from-background/70 via-background/30 to-background/80 pointer-events-none absolute inset-0 bg-gradient-to-b"
           />
         </div>
 
