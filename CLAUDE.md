@@ -147,19 +147,13 @@ src/
 │   ├── auth/
 │   │   ├── api/       # Server functions and queries
 │   │   └── components/ # Auth forms and status components
-│   ├── cities/
-│   │   └── api/       # Server functions and queries
-│   ├── companies/
-│   │   └── api/       # Server functions and queries
-│   ├── hero/
-│   │   ├── components/ # Hero section components
-│   │   └── config/    # Stats configuration
-│   ├── jobs/
-│   │   ├── api/       # Server functions and queries
-│   │   └── components/ # Job cards and indicators
-│   ├── landing/
-│   │   ├── components/ # Landing page sections
-│   │   └── config/    # Cities and features configs
+│   ├── landing/       # Complete landing page feature (self-contained)
+│   │   ├── api/
+│   │   │   ├── cities/     # Popular cities queries + server functions
+│   │   │   ├── companies/  # Popular companies queries + server functions
+│   │   │   └── jobs/       # Recent jobs queries + server functions
+│   │   ├── components/ # All landing UI (hero, sections, job cards)
+│   │   └── config/    # Feature configs (stats, cities, features)
 │   └── navigation/
 │       ├── components/ # Navigation components
 │       └── config/    # Navigation configuration
@@ -199,11 +193,10 @@ features/[feature-name]/
 
 **Current Features:**
 - **`features/auth/`** - Authentication with API (queries, server functions) and components (LoginForm, SignupForm, UserStatus, SignOutButton)
-- **`features/cities/`** - City data API (server functions and queries for popular cities)
-- **`features/companies/`** - Company data API (server functions and queries for popular companies)
-- **`features/hero/`** - Landing page hero section with components (HeroSection, SearchForm, etc.) and stats config
-- **`features/jobs/`** - Job listings with API and components (JobCard, ScoreIndicator)
-- **`features/landing/`** - Landing page sections (Bento, Blog, FAQ, CTA, Popular sections) with cities/features configs
+- **`features/landing/`** - Complete landing page feature (self-contained, no cross-feature imports)
+  - **`api/`** - Organized by domain: `cities/`, `companies/`, `jobs/` (each with queries.ts + server-functions.ts)
+  - **`components/`** - All landing components: hero (HeroSection, SearchForm, etc.), sections (Bento, Blog, FAQ, CTA, Popular), job cards (JobCard, ScoreIndicator)
+  - **`config/`** - Feature configs (stats, cities, features)
 - **`features/navigation/`** - Navigation components (CardNav) with navigation config
 
 **Key Principles:**

@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-import { popularCompaniesQueryOptions, type PopularCompany } from "~/features/companies/api/queries";
+import { popularCompaniesQueryOptions, type PopularCompany } from "~/features/landing/api/companies/queries";
 
 export function PopularCompanies() {
   const { data: companies } = useSuspenseQuery(popularCompaniesQueryOptions());

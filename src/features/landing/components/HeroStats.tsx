@@ -1,4 +1,4 @@
-import { heroStats } from "~/features/hero/config/stats.config";
+import { heroStats } from "~/features/landing/config/stats.config";
 import { StatBadge } from "./StatBadge";
 
 export function HeroStats() {

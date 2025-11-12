@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { JobCard } from "~/features/jobs/components/JobCard";
-import { recentJobsQueryOptions, type Job } from "~/features/jobs/api/queries";
+import { JobCard } from "~/features/landing/components/JobCard";
+import { recentJobsQueryOptions, type Job } from "~/features/landing/api/jobs/queries";
 
 export function RecentJobs() {
   const { data: jobs } = useSuspenseQuery(recentJobsQueryOptions());

@@ -1,7 +1,7 @@
 import { Briefcase, MapPin } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import type { Job } from "~/features/jobs/api/queries";
+import type { Job } from "~/features/landing/api/jobs/queries";
 import { ScoreIndicator } from "./ScoreIndicator";
 
 interface JobCardProps {

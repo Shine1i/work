@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "~/components/ui/card";
 import { BorderBeam } from "~/components/ui/border-beam";
 import { cityImages, defaultCityImage } from "~/features/landing/config/cities.config";
-import { popularCitiesQueryOptions, type PopularCity } from "~/features/cities/api/queries";
+import { popularCitiesQueryOptions, type PopularCity } from "~/features/landing/api/cities/queries";
 
 export function PopularCities() {
   const { data: cities } = useSuspenseQuery(popularCitiesQueryOptions());
