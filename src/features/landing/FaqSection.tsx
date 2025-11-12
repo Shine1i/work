@@ -39,7 +39,7 @@ const faqs = [
 export  function FaqSection() {
   return (
     <div className="">
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:px-8">
         <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Frequently asked questions</h2>
         <p className="mt-6 max-w-2xl text-base/7 text-muted-foreground">
           Have a different question and can't find the answer you're looking for? Reach out to our support team by{' '}

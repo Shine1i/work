@@ -3,7 +3,7 @@ import { featureCards } from "~/config/features";
 
 export function BentoSection() {
   return (
-    <section className="py-12 sm:py-16">
+    <section className="py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">

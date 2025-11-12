@@ -59,7 +59,7 @@ const posts = [
 
 export  function BlogSection() {
   return (
-    <div className="py-24 sm:py-32">
+    <div className="py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">

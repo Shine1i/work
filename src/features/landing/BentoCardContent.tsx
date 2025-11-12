@@ -56,7 +56,7 @@ export function SmartJobSearchContent() {
 
           {/* Badges positioned at bottom right */}
           <div className="flex justify-end">
-            <div className="flex flex-wrap justify-end gap-1.5 opacity-80">
+            <div className="hidden flex-wrap justify-end gap-1.5 opacity-80 md:flex">
               <span className="rounded-full bg-green-100 px-2.5 py-1 text-[11px] font-medium text-green-700 dark:bg-green-900/40 dark:text-green-400">
                 Entry Level
               </span>
@@ -140,7 +140,7 @@ export function JobsDatabaseContent() {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 dark:from-blue-500/10 dark:to-cyan-500/10" />
 
       <div className="relative flex h-full w-full items-center justify-center">
-        <div className="text-center opacity-70">
+        <div className="hidden text-center opacity-70 md:block">
           <div className="text-5xl font-bold text-blue-500/60 dark:text-cyan-500/60 lg:text-6xl">
             80,000+
           </div>

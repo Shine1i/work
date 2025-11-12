@@ -89,7 +89,7 @@ const navigation = {
 
 export  function Footer() {
   return (
-    <footer className="bg-background">
+    <footer className="">
       <div className="mx-auto max-w-7xl px-6 pt-20 pb-8 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="grid grid-cols-2 gap-8 xl:col-span-2">

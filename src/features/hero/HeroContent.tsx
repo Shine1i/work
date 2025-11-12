@@ -15,7 +15,7 @@ export function HeroContent({ headlineId }: { headlineId: string }) {
       </motion.h1>
 
       <motion.p
-        className="text-muted-foreground mx-auto mt-4 max-w-3xl text-base text-pretty sm:text-lg md:text-xl"
+        className="text-muted-foreground mx-auto mt-4 hidden max-w-3xl text-base text-pretty sm:text-lg md:block md:text-xl"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}

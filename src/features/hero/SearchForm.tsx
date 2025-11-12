@@ -96,7 +96,7 @@ export function SearchForm({
       className={cn(className)}
     >
       <Card className="bg-background/70 dark:bg-background/50 mx-auto w-full max-w-5xl rounded-2xl border shadow-sm backdrop-blur-sm">
-        <CardContent className="p-4 sm:p-6">
+        <CardContent className="p-4 sm:px-6">
           <form
             role="search"
             aria-labelledby={labelledById}
@@ -105,7 +105,7 @@ export function SearchForm({
           >
             {/* Primary row: compact pill with separators and icons */}
             <div className="flex flex-col gap-3">
-              <div className="bg-background/80 dark:bg-background/50 flex flex-col items-stretch gap-2 rounded-xl border-2 border-border/60 p-2 shadow-sm md:flex-row md:rounded-full md:p-1.5">
+              <div className="bg-background/80 dark:bg-background/50 flex flex-col rounded-xl items-stretch gap-2  border-2 border-border/60 p-2 shadow-sm md:flex-row md:rounded-sm md:p-1.5">
                 {/* Keyword */}
                 <div className="relative min-w-0 flex-1">
                   <label htmlFor="q" className="sr-only">
@@ -120,7 +120,7 @@ export function SearchForm({
                     name="q"
                     placeholder="Job title or keyword"
                     autoComplete="off"
-                    className="h-12 rounded-full border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
+                    className="h-12 rounded-md border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
                 </div>
 
@@ -140,7 +140,7 @@ export function SearchForm({
                     name="location"
                     placeholder="City, country, or remote"
                     autoComplete="off"
-                    className="h-12 rounded-full border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
+                    className="h-12 rounded-md border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
                 </div>
 
@@ -152,7 +152,7 @@ export function SearchForm({
                   <Select value={filters.experienceLevel} onValueChange={(v) => updateFilter("experienceLevel", v)}>
                     <SelectTrigger
                       aria-label="Experience level"
-                      className="!h-12 w-full justify-between rounded-full border-border/50 bg-transparent px-4 py-0 text-base focus:ring-1 focus:ring-ring md:text-sm"
+                      className="!h-12 w-full justify-between rounded-md border-border/50 bg-transparent px-4 py-0 text-base focus:ring-1 focus:ring-ring md:text-sm"
                     >
                       <SelectValue placeholder="Any level" />
                     </SelectTrigger>
@@ -170,7 +170,7 @@ export function SearchForm({
                 <PulsatingButton
                   type="submit"
                   aria-label="Search jobs"
-                  className="h-12 w-full justify-center rounded-full px-6 md:w-auto"
+                  className="h-12 w-full justify-center rounded-md px-6 md:w-auto"
                 >
                   <div className="inline-flex items-center gap-2">
                     <Search className="size-4" />
