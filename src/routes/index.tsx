@@ -8,6 +8,7 @@ import { HeroSection } from "~/features/hero/HeroSection";
 import { BentoSection } from "~/features/landing/BentoSection";
 import { BlogSection } from "~/features/landing/BlogSection";
 import { CtaSection } from "~/features/landing/CtaSection";
+import { FaqSection } from "~/features/landing/FaqSection";
 import { PopularCategories } from "~/features/landing/PopularCategories";
 import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
@@ -58,6 +59,7 @@ function HomePage() {
           </Suspense>
           <BentoSection />
           <BlogSection />
+          <FaqSection />
           <CtaSection />
 
           {/* Quick links / theme toggle + auth status */}

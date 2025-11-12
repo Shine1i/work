@@ -14,7 +14,7 @@ export function BentoSection() {
           </p>
         </div>
 
-        <BentoGrid className="auto-rows-[16rem] grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <BentoGrid className="auto-rows-[16rem] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {featureCards.map((feature) => (
             <BentoCard
               key={feature.name}

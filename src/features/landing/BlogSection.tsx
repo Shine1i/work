@@ -67,49 +67,37 @@ export  function BlogSection() {
           </h2>
           <p className="mt-2 text-lg/8 text-muted-foreground">Learn how to grow your business with our expert advice.</p>
         </div>
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-12 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
-            <article key={post.id} className="flex flex-col items-start justify-between">
-              <div className="relative w-full">
+            <article key={post.id} className="group flex flex-col items-start justify-between rounded-2xl border-2 border-border bg-card/40 backdrop-blur-sm p-6 transition-all duration-300 hover:bg-card/60 hover:border-primary/50 hover:shadow-lg">
+              <div className="relative w-full mb-4">
                 <img
                   alt=""
                   src={post.imageUrl}
-                  className="aspect-video w-full rounded-2xl bg-muted object-cover sm:aspect-2/1 lg:aspect-3/2"
+                  className="aspect-video w-full rounded-xl bg-muted object-cover sm:aspect-2/1 lg:aspect-3/2 group-hover:scale-[1.02] transition-transform duration-300"
                 />
-                <div className="absolute inset-0 rounded-2xl inset-ring inset-ring-foreground/10" />
+                <div className="absolute inset-0 rounded-xl inset-ring inset-ring-foreground/10" />
               </div>
-              <div className="flex max-w-xl grow flex-col justify-between">
-                <div className="mt-8 flex items-center gap-x-4 text-xs">
+              <div className="flex w-full grow flex-col justify-between">
+                <div className="flex items-center gap-x-4 text-xs mb-3">
                   <time dateTime={post.datetime} className="text-muted-foreground">
                     {post.date}
                   </time>
                   <a
                     href={post.category.href}
-                    className="relative z-10 rounded-full bg-muted px-3 py-1.5 font-medium text-muted-foreground hover:bg-muted/80"
+                    className="relative z-10 rounded-full bg-primary/10 px-3 py-1.5 font-medium text-primary hover:bg-primary/20 transition-colors"
                   >
                     {post.category.title}
                   </a>
                 </div>
-                <div className="group relative grow">
-                  <h3 className="mt-3 text-lg/6 font-semibold text-foreground group-hover:text-muted-foreground">
+                <div className="relative grow">
+                  <h3 className="text-lg/6 font-semibold text-foreground group-hover:text-primary transition-colors">
                     <a href={post.href}>
                       <span className="absolute inset-0" />
                       {post.title}
                     </a>
                   </h3>
-                  <p className="mt-5 line-clamp-3 text-sm/6 text-muted-foreground">{post.description}</p>
-                </div>
-                <div className="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                  <img alt="" src={post.author.imageUrl} className="size-10 rounded-full bg-muted" />
-                  <div className="text-sm/6">
-                    <p className="font-semibold text-foreground">
-                      <a href={post.author.href}>
-                        <span className="absolute inset-0" />
-                        {post.author.name}
-                      </a>
-                    </p>
-                    <p className="text-muted-foreground">{post.author.role}</p>
-                  </div>
+                  <p className="mt-3 line-clamp-3 text-sm/6 text-muted-foreground">{post.description}</p>
                 </div>
               </div>
             </article>

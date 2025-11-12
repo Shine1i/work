@@ -1,4 +1,5 @@
 import { Card, CardContent } from "~/components/ui/card";
+import { BorderBeam } from "~/components/ui/border-beam";
 import { categories } from "~/config/categories";
 
 export function PopularCategories() {
@@ -12,18 +13,25 @@ export function PopularCategories() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {categories.map((category) => (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {categories.map((category, index) => (
             <a
               key={category.name}
               href={category.href}
-              className="block transition-transform hover:scale-105"
+              className="group block transition-transform hover:scale-105"
             >
-              <Card className="h-full">
-                <CardContent className="flex flex-col items-center p-4 text-center">
-                  <div className="text-primary mb-2">{category.icon}</div>
-                  <h3 className="font-semibold">{category.name}</h3>
-                  <p className="text-muted-foreground mt-1 text-xs">
+              <Card className="h-full relative overflow-hidden border-2 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors">
+                <BorderBeam
+                  size={80}
+                  duration={12}
+                  delay={index * 2}
+                  colorFrom="hsl(var(--primary))"
+                  colorTo="hsl(var(--primary) / 0.3)"
+                />
+                <CardContent className="flex flex-col items-center p-5 text-center relative z-10">
+                  <div className="text-primary mb-3 text-3xl group-hover:scale-110 transition-transform">{category.icon}</div>
+                  <h3 className="font-semibold text-sm">{category.name}</h3>
+                  <p className="text-muted-foreground mt-1.5 text-xs font-medium">
                     {category.count.toLocaleString()} jobs
                   </p>
                 </CardContent>
