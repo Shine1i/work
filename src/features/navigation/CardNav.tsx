@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
+import { Button } from '~/components/ui/button';
 
 type CardNavLink = {
   label: string;
@@ -11,8 +12,8 @@ type CardNavLink = {
 
 export type CardNavItem = {
   label: string;
-  bgColor: string;
-  textColor: string;
+  bgClassName: string;
+  textClassName: string;
   links: CardNavLink[];
 };
 
@@ -24,8 +25,6 @@ export interface CardNavProps {
   ease?: string;
   baseColor?: string;
   menuColor?: string;
-  buttonBgColor?: string;
-  buttonTextColor?: string;
 }
 
 const CardNav: React.FC<CardNavProps> = ({
@@ -35,9 +34,7 @@ const CardNav: React.FC<CardNavProps> = ({
   className = '',
   ease = 'power3.out',
   baseColor = '#fff',
-  menuColor,
-  buttonBgColor,
-  buttonTextColor
+  menuColor
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -189,13 +186,11 @@ const CardNav: React.FC<CardNavProps> = ({
             <img src={logo} alt={logoAlt} className="logo h-[28px]" />
           </div>
 
-          <button
-            type="button"
-            className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 items-center h-full font-medium cursor-pointer transition-colors duration-300"
-            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+          <Button
+            className="card-nav-cta-button hidden md:inline-flex rounded-[calc(0.75rem-0.2rem)] px-4 h-full"
           >
             Get Started
-          </button>
+          </Button>
         </div>
 
         <div
@@ -207,9 +202,8 @@ const CardNav: React.FC<CardNavProps> = ({
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}
-              className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[60px] md:h-full md:min-h-0 md:flex-[1_1_0%]"
+              className={`nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[60px] md:h-full md:min-h-0 md:flex-[1_1_0%] ${item.bgClassName} ${item.textClassName}`}
               ref={setCardRef(idx)}
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
             >
               <div className="nav-card-label font-normal tracking-[-0.5px] text-[18px] md:text-[22px]">
                 {item.label}

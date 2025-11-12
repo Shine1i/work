@@ -6,6 +6,8 @@ import { landingNavConfig, landingNavItems } from "~/config/navigation";
 import { UserStatus } from "~/features/auth/UserStatus";
 import { HeroSection } from "~/features/hero/HeroSection";
 import { BentoSection } from "~/features/landing/BentoSection";
+import { BlogSection } from "~/features/landing/BlogSection";
+import { CtaSection } from "~/features/landing/CtaSection";
 import { PopularCategories } from "~/features/landing/PopularCategories";
 import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
@@ -26,8 +28,6 @@ function HomePage() {
         logo={landingNavConfig.logo}
         logoAlt={landingNavConfig.logoAlt}
         items={landingNavItems}
-        buttonBgColor={landingNavConfig.buttonBgColor}
-        buttonTextColor={landingNavConfig.buttonTextColor}
       />
       <HeroSection />
 
@@ -51,11 +51,13 @@ function HomePage() {
 
         {/* Content with proper z-index */}
         <div className="relative z-10">
-          <BentoSection />
           <PopularCategories />
           <Suspense fallback={<div className="py-12 text-center">Loading jobs...</div>}>
             <RecentJobs />
           </Suspense>
+          <BentoSection />
+          <BlogSection />
+          <CtaSection />
 
           {/* Quick links / theme toggle + auth status */}
           <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
