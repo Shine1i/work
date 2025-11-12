@@ -10,14 +10,17 @@ import { BlogSection } from "~/features/landing/BlogSection";
 import { CtaSection } from "~/features/landing/CtaSection";
 import { FaqSection } from "~/features/landing/FaqSection";
 import { PopularCities } from "~/features/landing/PopularCategories";
+import { PopularCompanies } from "~/features/landing/PopularCompanies";
 import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
+import { popularCompaniesQueryOptions } from "~/lib/companies/queries";
 import { recentJobsQueryOptions } from "~/lib/jobs/queries";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
-    // Prefetch jobs data for SSR
+    // Prefetch jobs and companies data for SSR
     context.queryClient.prefetchQuery(recentJobsQueryOptions());
+    context.queryClient.prefetchQuery(popularCompaniesQueryOptions());
   },
   component: HomePage,
 });
@@ -54,6 +57,9 @@ function HomePage() {
         {/* Content with proper z-index */}
         <div className="relative z-10">
           <PopularCities />
+          <Suspense fallback={<div className="py-12 text-center">Loading companies...</div>}>
+            <PopularCompanies />
+          </Suspense>
           <Suspense fallback={<div className="py-12 text-center">Loading jobs...</div>}>
             <RecentJobs />
           </Suspense>
