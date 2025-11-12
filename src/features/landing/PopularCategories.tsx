@@ -1,8 +1,12 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "~/components/ui/card";
 import { BorderBeam } from "~/components/ui/border-beam";
-import { cities } from "~/config/cities";
+import { cityImages, defaultCityImage } from "~/config/cities";
+import { popularCitiesQueryOptions } from "~/lib/cities/queries";
 
 export function PopularCities() {
+  const { data: cities } = useSuspenseQuery(popularCitiesQueryOptions());
+
   return (
     <section className=" ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -17,7 +21,7 @@ export function PopularCities() {
           {cities.map((city, index) => (
             <a
               key={city.name}
-              href={city.href}
+              href="#"
               className="group block transition-transform hover:scale-105"
             >
               <Card className="h-full relative !pt-0 overflow-hidden border-2 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-colors">
@@ -31,8 +35,8 @@ export function PopularCities() {
                 <CardContent className="flex flex-col p-0 relative z-10">
                   <div className="relative w-full h-32 overflow-hidden">
                     <img
-                      src={city.imageUrl}
-                      alt={city.name}
+                      src={cityImages[city.name || ""] || defaultCityImage}
+                      alt={city.name || "City"}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
@@ -40,7 +44,7 @@ export function PopularCities() {
                   <div className="p-4 text-center">
                     <h3 className="font-semibold text-sm">{city.name}</h3>
                     <p className="text-muted-foreground mt-1.5 text-xs font-medium">
-                      {city.count.toLocaleString()} jobs
+                      {city.jobCount.toLocaleString()} jobs
                     </p>
                   </div>
                 </CardContent>

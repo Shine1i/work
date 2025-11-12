@@ -13,12 +13,14 @@ import { PopularCities } from "~/features/landing/PopularCategories";
 import { PopularCompanies } from "~/features/landing/PopularCompanies";
 import { RecentJobs } from "~/features/landing/RecentJobs";
 import CardNav from "~/features/navigation/CardNav";
+import { popularCitiesQueryOptions } from "~/lib/cities/queries";
 import { popularCompaniesQueryOptions } from "~/lib/companies/queries";
 import { recentJobsQueryOptions } from "~/lib/jobs/queries";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
-    // Prefetch jobs and companies data for SSR
+    // Prefetch cities, jobs and companies data for SSR
+    context.queryClient.prefetchQuery(popularCitiesQueryOptions());
     context.queryClient.prefetchQuery(recentJobsQueryOptions());
     context.queryClient.prefetchQuery(popularCompaniesQueryOptions());
   },
@@ -56,7 +58,9 @@ function HomePage() {
 
         {/* Content with proper z-index */}
         <div className="relative z-10">
-          <PopularCities />
+          <Suspense fallback={<div className="py-12 text-center">Loading cities...</div>}>
+            <PopularCities />
+          </Suspense>
           <Suspense fallback={<div className="py-12 text-center">Loading companies...</div>}>
             <PopularCompanies />
           </Suspense>
