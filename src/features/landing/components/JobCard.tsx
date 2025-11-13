@@ -2,6 +2,7 @@ import { Briefcase, MapPin } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import type { Job } from "~/features/landing/api/jobs/queries";
+import { getSwedishEmploymentType } from "~/features/landing/utils/employment-type";
 import { ScoreIndicator } from "./ScoreIndicator";
 
 interface JobCardProps {
@@ -44,9 +45,13 @@ export function JobCard({ job }: JobCardProps) {
     >
       <Card className="relative h-full">
         {/* Score indicator in top right */}
-        {job.stegettOverallScore && (
+        {job.entrylevelScore && (
           <div className="absolute right-3 top-3 z-10">
-            <ScoreIndicator score={job.stegettOverallScore} />
+            <ScoreIndicator
+              score={job.entrylevelScore}
+              reasoning={job.entrylevelReasoning}
+              implicitRequirements={job.implicitRequirements}
+            />
           </div>
         )}
 
@@ -83,6 +88,10 @@ export function JobCard({ job }: JobCardProps) {
             {job.experienceLevel && (
               <Badge variant="secondary">{formatExperienceLevel(job.experienceLevel)}</Badge>
             )}
+            {job.occupation && <Badge variant="secondary">{job.occupation}</Badge>}
+            {job.employmentType && (
+              <Badge variant="outline">{getSwedishEmploymentType(job.employmentType)}</Badge>
+            )}
             {job.locationFlexibility && job.locationFlexibility !== "unknown" && (
               <Badge variant="outline">
                 {job.locationFlexibility.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
@@ -95,8 +104,11 @@ export function JobCard({ job }: JobCardProps) {
             ))}
           </div>
 
-          <div className="text-muted-foreground text-xs">
-            <span suppressHydrationWarning>{formatRelativeTime(job.publishedAt)}</span>
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground text-xs" suppressHydrationWarning>
+              {formatRelativeTime(job.publishedAt)}
+            </span>
+            <span className="text-sm font-semibold">40 000-45 000 kr/mån</span>
           </div>
         </CardContent>
       </Card>

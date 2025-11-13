@@ -1,5 +1,9 @@
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
+
 interface ScoreIndicatorProps {
   score: number; // Can be 0-1, 1-10, or 0-100
+  reasoning?: string | null;
+  implicitRequirements?: string[] | null;
 }
 
 function normalizeScore(score: number): number {
@@ -22,14 +26,14 @@ function getScoreColor(normalizedScore: number): string {
   return "#22c55e"; // green
 }
 
-export function ScoreIndicator({ score }: ScoreIndicatorProps) {
+export function ScoreIndicator({ score, reasoning, implicitRequirements }: ScoreIndicatorProps) {
   const normalized = normalizeScore(score);
   const percentage = Math.round(normalized * 100);
   const color = getScoreColor(normalized);
   const circumference = 2 * Math.PI * 16; // radius = 16
   const strokeDashoffset = circumference - (normalized * circumference);
 
-  return (
+  const scoreCircle = (
     <div className="relative size-12" title={`Score: ${percentage}`}>
       <svg className="size-full -rotate-90 transform" viewBox="0 0 36 36">
         {/* Background circle */}
@@ -62,5 +66,36 @@ export function ScoreIndicator({ score }: ScoreIndicatorProps) {
         </span>
       </div>
     </div>
+  );
+
+  // If no reasoning or requirements, just show the score circle
+  if (!reasoning && (!implicitRequirements || implicitRequirements.length === 0)) {
+    return scoreCircle;
+  }
+
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>{scoreCircle}</HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        <div className="space-y-3">
+          {reasoning && (
+            <div>
+              <h4 className="mb-2 text-sm font-semibold">Bedömning</h4>
+              <p className="text-sm text-muted-foreground">{reasoning}</p>
+            </div>
+          )}
+          {implicitRequirements && implicitRequirements.length > 0 && (
+            <div>
+              <h4 className="mb-2 text-sm font-semibold">Implicita krav</h4>
+              <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
+                {implicitRequirements.map((req, idx) => (
+                  <li key={idx}>{req}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </HoverCardContent>
+    </HoverCard>
   );
 }

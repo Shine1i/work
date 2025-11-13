@@ -20,28 +20,11 @@ export const applicationProcessTypeEnum = pgEnum("application_process_type_enum"
   "standard_ats",
   "complex_ats",
 ]);
-export const companySizeEnum = pgEnum("company_size_enum", [
-  "startup",
-  "small",
-  "medium",
-  "large",
-  "unknown",
-]);
 export const experienceLevelEnum = pgEnum("experience_level_enum", [
   "true_entry_level",
   "low_experience",
   "experience_required",
   "internship",
-]);
-export const growthPotentialEnum = pgEnum("growth_potential_enum", [
-  "high",
-  "medium",
-  "low",
-]);
-export const interactionLevelEnum = pgEnum("interaction_level_enum", [
-  "low",
-  "medium",
-  "high",
 ]);
 export const jobStatusEnum = pgEnum("job_status_enum", [
   "pending",
@@ -49,11 +32,6 @@ export const jobStatusEnum = pgEnum("job_status_enum", [
   "completed",
   "failed",
   "stopped",
-]);
-export const languageLevelEnum = pgEnum("language_level_enum", [
-  "swedish_required",
-  "english_sufficient",
-  "bilingual_preferred",
 ]);
 export const locationFlexibilityEnum = pgEnum("location_flexibility_enum", [
   "on_site_only",
@@ -121,15 +99,10 @@ export const aiClassifications = pgTable(
     implicitRequirements: text("implicit_requirements").array(),
     applicationProcessType: applicationProcessTypeEnum("application_process_type"),
     requiresAssessment: boolean("requires_assessment"),
-    interactionLevel: interactionLevelEnum("interaction_level"),
-    culturalSignals: text("cultural_signals").array(),
-    growthPotential: growthPotentialEnum("growth_potential"),
-    companySize: companySizeEnum("company_size"),
-    languageLevel: languageLevelEnum("language_level"),
     locationFlexibility: locationFlexibilityEnum("location_flexibility"),
     requiresDriversLicense: boolean("requires_drivers_license"),
-    stegettOverallScore: doublePrecision("stegett_overall_score"),
-    stegettReasoning: text("stegett_reasoning"),
+    entrylevelScore: doublePrecision("entrylevel_score"),
+    entrylevelReasoning: text("entrylevel_reasoning"),
     aiTags: text("ai_tags").array(),
     classificationConfidence: doublePrecision("classification_confidence"),
     modelVersion: varchar("model_version", { length: 100 }).notNull(),

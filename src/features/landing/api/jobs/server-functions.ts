@@ -11,11 +11,15 @@ export const $getRecentFriendlyJobs = createServerFn({ method: "GET" }).handler(
       locationText: jobPostings.locationText,
       publishedAt: jobPostings.publishedAt,
       applicationUrl: jobPostings.applicationUrl,
+      occupation: jobPostings.occupation,
+      employmentType: jobPostings.employmentType,
       companyName: companies.name,
       companyLogoUrl: companies.companyLogoUrl,
       experienceLevel: aiClassifications.experienceLevel,
       aiTags: aiClassifications.aiTags,
-      stegettOverallScore: aiClassifications.stegettOverallScore,
+      entrylevelScore: aiClassifications.entrylevelScore,
+      entrylevelReasoning: aiClassifications.entrylevelReasoning,
+      implicitRequirements: aiClassifications.implicitRequirements,
       locationFlexibility: aiClassifications.locationFlexibility,
     })
     .from(jobPostings)
@@ -24,10 +28,10 @@ export const $getRecentFriendlyJobs = createServerFn({ method: "GET" }).handler(
     .where(
       and(
         inArray(aiClassifications.experienceLevel, ["true_entry_level", "low_experience"]),
-        isNotNull(aiClassifications.stegettOverallScore),
+        isNotNull(aiClassifications.entrylevelScore),
       ),
     )
-    .orderBy(desc(aiClassifications.stegettOverallScore), desc(jobPostings.publishedAt))
+    .orderBy(desc(aiClassifications.entrylevelScore), desc(jobPostings.publishedAt))
     .limit(6);
 
   return jobs;
