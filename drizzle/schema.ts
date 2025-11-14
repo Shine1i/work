@@ -1,4 +1,4 @@
-import { pgTable, varchar, unique, serial, text, timestamp, foreignKey, integer, boolean, doublePrecision, uniqueIndex, index, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, varchar, foreignKey, unique, serial, integer, text, timestamp, doublePrecision, boolean, uniqueIndex, index, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const applicationProcessTypeEnum = pgEnum("application_process_type_enum", ['quick_apply', 'standard_ats', 'complex_ats'])
@@ -10,16 +10,6 @@ export const locationFlexibilityEnum = pgEnum("location_flexibility_enum", ['on_
 export const alembicVersion = pgTable("alembic_version", {
 	versionNum: varchar("version_num", { length: 32 }).primaryKey().notNull(),
 });
-
-export const companies = pgTable("companies", {
-	id: serial().primaryKey().notNull(),
-	name: varchar({ length: 255 }).notNull(),
-	companyLogoUrl: text("company_logo_url"),
-	websiteUrl: text("website_url"),
-	createdAt: timestamp("created_at", { mode: 'string' }),
-}, (table) => [
-	unique("companies_name_key").on(table.name),
-]);
 
 export const jobPostings = pgTable("job_postings", {
 	id: serial().primaryKey().notNull(),
@@ -38,6 +28,7 @@ export const jobPostings = pgTable("job_postings", {
 	sourceJobId: varchar("source_job_id", { length: 100 }).notNull(),
 	sourceUrl: text("source_url").notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }),
+	averageSalary: doublePrecision("average_salary"),
 }, (table) => [
 	foreignKey({
 			columns: [table.companyId],
@@ -46,6 +37,16 @@ export const jobPostings = pgTable("job_postings", {
 		}),
 	unique("_source_job_uc").on(table.sourceName, table.sourceJobId),
 	unique("job_postings_source_url_key").on(table.sourceUrl),
+]);
+
+export const companies = pgTable("companies", {
+	id: serial().primaryKey().notNull(),
+	name: varchar({ length: 255 }).notNull(),
+	companyLogoUrl: text("company_logo_url"),
+	websiteUrl: text("website_url"),
+	createdAt: timestamp("created_at", { mode: 'string' }),
+}, (table) => [
+	unique("companies_name_key").on(table.name),
 ]);
 
 export const aiClassifications = pgTable("ai_classifications", {

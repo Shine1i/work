@@ -21,6 +21,13 @@ export const $getRecentFriendlyJobs = createServerFn({ method: "GET" }).handler(
       entrylevelReasoning: aiClassifications.entrylevelReasoning,
       implicitRequirements: aiClassifications.implicitRequirements,
       locationFlexibility: aiClassifications.locationFlexibility,
+      educationCanReplaceExperience: aiClassifications.educationCanReplaceExperience,
+      requiredExperienceYearsMin: aiClassifications.requiredExperienceYearsMin,
+      requiredExperienceYearsMax: aiClassifications.requiredExperienceYearsMax,
+      applicationProcessType: aiClassifications.applicationProcessType,
+      requiresAssessment: aiClassifications.requiresAssessment,
+      requiresDriversLicense: aiClassifications.requiresDriversLicense,
+      classificationConfidence: aiClassifications.classificationConfidence,
     })
     .from(jobPostings)
     .innerJoin(companies, eq(jobPostings.companyId, companies.id))
