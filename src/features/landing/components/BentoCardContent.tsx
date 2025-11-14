@@ -59,10 +59,10 @@ export function SmartJobSearchContent() {
           <div className="flex justify-end">
             <div className="hidden flex-wrap justify-end gap-1.5 opacity-80 md:flex">
               <span className="rounded-full bg-green-100 px-2.5 py-1 text-[11px] font-medium text-green-700 dark:bg-green-900/40 dark:text-green-400">
-                Entry Level
+                Nybörjare
               </span>
               <span className="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-400">
-                Mid Level
+                Mellannivå
               </span>
               <span className="rounded-full bg-purple-100 px-2.5 py-1 text-[11px] font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-400">
                 Senior
@@ -129,7 +129,7 @@ export function JobsDatabaseContent() {
             className="text-5xl font-bold text-blue-500/60 dark:text-cyan-500/60 lg:text-6xl"
           />
           <span className="text-5xl font-bold text-blue-500/60 dark:text-cyan-500/60 lg:text-6xl">+</span>
-          <p className="mt-2 text-xs text-neutral-500/80 dark:text-neutral-400/80">Active Jobs</p>
+          <p className="mt-2 text-xs text-neutral-500/80 dark:text-neutral-400/80">Aktiva Jobb</p>
         </div>
       </div>
     </>
@@ -147,30 +147,30 @@ interface Item {
 
 let resumeTools = [
   {
-    name: "CV Helper",
-    description: "Smart formatting & optimization",
-    time: "Active",
+    name: "CV-Hjälpare",
+    description: "Smart formatering & optimering",
+    time: "Aktiv",
     icon: "📄",
     color: "#00C9A7",
   },
   {
-    name: "Resume Builder",
-    description: "Professional templates",
-    time: "Active",
+    name: "CV-Byggare",
+    description: "Professionella mallar",
+    time: "Aktiv",
     icon: "✨",
     color: "#FFB800",
   },
   {
-    name: "Job Adaptation",
-    description: "Tailored to application",
-    time: "Active",
+    name: "Jobbanpassning",
+    description: "Anpassad till ansökan",
+    time: "Aktiv",
     icon: "🎯",
     color: "#FF3D71",
   },
   {
-    name: "AST Enhanced",
-    description: "AI-powered analysis",
-    time: "Active",
+    name: "ATS-Förbättrad",
+    description: "AI-driven analys",
+    time: "Aktiv",
     icon: "🤖",
     color: "#1E86FF",
   },

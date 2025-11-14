@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { TypingAnimation } from "~/components/ui/typing-animation";
 import { Highlighter } from "~/components/ui/highlighter";
 
 export function HeroContent({ headlineId }: { headlineId: string }) {
@@ -11,22 +12,44 @@ export function HeroContent({ headlineId }: { headlineId: string }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.65, ease: "easeOut" }}
       >
-        Your all-in-one job search hub
+        En plattform som{" "}
+        <TypingAnimation
+          words={[
+            "hittar ditt första jobb",
+            "optimerar ditt CV",
+            "klarar AI-screeningen",
+            "matchar dina färdigheter",
+          ]}
+          loop={true}
+          pauseDelay={2000}
+          typeSpeed={80}
+          deleteSpeed={40}
+          className="text-primary"
+        />
       </motion.h1>
+
+      <motion.p
+        className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-foreground/90 sm:text-base"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+      >
+        Företag använder AI för att screena din ansökan – det är inte fusk att anpassa sig, det är smart.
+      </motion.p>
 
       <motion.p
         className="text-muted-foreground mx-auto mt-4 hidden max-w-3xl text-base text-pretty sm:text-lg md:block md:text-xl"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut", delay: 0.08 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
       >
-        Search{" "}
+        Sök bland{" "}
         <Highlighter action="underline" color="#FF9800">
-          thousands of jobs
+          80 000+ klassificerade jobb
         </Highlighter>{" "}
-        in one place. No experience? Bad at resumes? Struggling to find the right fit?{" "}
+        med ärliga entry-level betyg. Ingen erfarenhet? Svårt med CV? Vet inte var du passar?{" "}
         <Highlighter action="highlight" color="#87CEFA">
-          We've got you covered.
+          Vi hjälper dig.
         </Highlighter>
       </motion.p>
     </div>

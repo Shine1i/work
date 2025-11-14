@@ -29,22 +29,16 @@ export type SearchFormValues = {
   company?: string;
   occupation?: string;
   location_flexibility?: string;
-  company_size?: string;
-  language_level?: string;
   application_process_type?: string;
-  growth_potential?: string;
   ai_tags?: string;
-  stegett_overall_score_min?: string;
+  entrylevel_score_min?: string;
 };
 
 interface FilterState {
   employmentType: string;
   experienceLevel: string;
-  companySize: string;
   locationFlexibility: string;
-  languageLevel: string;
   applicationProcessType: string;
-  growthPotential: string;
 }
 
 export function SearchForm({
@@ -57,11 +51,8 @@ export function SearchForm({
   const [filters, setFilters] = useState<FilterState>({
     employmentType: "any",
     experienceLevel: "any",
-    companySize: "any",
     locationFlexibility: "any",
-    languageLevel: "any",
     applicationProcessType: "any",
-    growthPotential: "any",
   });
 
   const updateFilter = <K extends keyof FilterState>(key: K, value: string) => {
@@ -78,11 +69,8 @@ export function SearchForm({
     // include controlled selects
     payload.employment_type = filters.employmentType;
     payload.experience_level = filters.experienceLevel;
-    payload.company_size = filters.companySize;
     payload.location_flexibility = filters.locationFlexibility;
-    payload.language_level = filters.languageLevel;
     payload.application_process_type = filters.applicationProcessType;
-    payload.growth_potential = filters.growthPotential;
 
     // UI only for now
     console.log("searchFormSubmit", payload);
@@ -109,7 +97,7 @@ export function SearchForm({
                 {/* Keyword */}
                 <div className="relative min-w-0 flex-1">
                   <label htmlFor="q" className="sr-only">
-                    Job title or keyword
+                    Jobbtitel eller sökord
                   </label>
                   <Search
                     aria-hidden
@@ -118,7 +106,7 @@ export function SearchForm({
                   <Input
                     id="q"
                     name="q"
-                    placeholder="Job title or keyword"
+                    placeholder="Jobbtitel, företag, färdigheter..."
                     autoComplete="off"
                     className="h-12 rounded-md border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
@@ -129,7 +117,7 @@ export function SearchForm({
                 {/* Location */}
                 <div className="relative min-w-0 flex-1">
                   <label htmlFor="location" className="sr-only">
-                    Location
+                    Plats
                   </label>
                   <MapPin
                     aria-hidden
@@ -138,7 +126,7 @@ export function SearchForm({
                   <Input
                     id="location"
                     name="location"
-                    placeholder="City, country, or remote"
+                    placeholder="Stad, region eller distans"
                     autoComplete="off"
                     className="h-12 rounded-md border-border/50 bg-transparent pl-9 focus-visible:ring-1 focus-visible:ring-ring"
                   />
@@ -148,20 +136,20 @@ export function SearchForm({
 
                 {/* Experience Level */}
                 <div className="w-full min-w-0 md:w-[220px] md:flex-none">
-                  <label className="sr-only">Experience level</label>
+                  <label className="sr-only">Erfarenhetsnivå</label>
                   <Select value={filters.experienceLevel} onValueChange={(v) => updateFilter("experienceLevel", v)}>
                     <SelectTrigger
-                      aria-label="Experience level"
+                      aria-label="Erfarenhetsnivå"
                       className="!h-12 w-full justify-between rounded-md border-border/50 bg-transparent px-4 py-0 text-base focus:ring-1 focus:ring-ring md:text-sm"
                     >
-                      <SelectValue placeholder="Any level" />
+                      <SelectValue placeholder="Alla nivåer" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="any">Any level</SelectItem>
-                      <SelectItem value="true_entry_level">True entry level</SelectItem>
-                      <SelectItem value="low_experience">Low experience</SelectItem>
-                      <SelectItem value="experience_required">Experience required</SelectItem>
-                      <SelectItem value="internship">Internship</SelectItem>
+                      <SelectItem value="any">Alla nivåer</SelectItem>
+                      <SelectItem value="true_entry_level">Nybörjare</SelectItem>
+                      <SelectItem value="low_experience">Junior</SelectItem>
+                      <SelectItem value="experience_required">Erfaren</SelectItem>
+                      <SelectItem value="internship">Praktik</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -169,12 +157,12 @@ export function SearchForm({
                 {/* Submit */}
                 <PulsatingButton
                   type="submit"
-                  aria-label="Search jobs"
+                  aria-label="Sök jobb"
                   className="h-12 w-full justify-center rounded-md px-6 md:w-auto"
                 >
                   <div className="inline-flex items-center gap-2">
                     <Search className="size-4" />
-                    Search
+                    Sök
                   </div>
                 </PulsatingButton>
               </div>
@@ -185,7 +173,7 @@ export function SearchForm({
               <AccordionItem value="more">
                 <AccordionTrigger>
                   <span className="inline-flex items-center gap-2">
-                    <SlidersHorizontal className="size-4" /> More filters
+                    <SlidersHorizontal className="size-4" /> Fler filter
                   </span>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -193,19 +181,19 @@ export function SearchForm({
                     {/* Employment Type */}
                     <div>
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Employment type
+                        Anställningstyp
                       </label>
                       <Select value={filters.employmentType} onValueChange={(v) => updateFilter("employmentType", v)}>
-                        <SelectTrigger aria-label="Employment type" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
+                        <SelectTrigger aria-label="Anställningstyp" className="h-10 border-border/60">
+                          <SelectValue placeholder="Alla" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="full_time">Full-time</SelectItem>
-                          <SelectItem value="part_time">Part-time</SelectItem>
-                          <SelectItem value="contract">Contract</SelectItem>
-                          <SelectItem value="internship">Internship</SelectItem>
-                          <SelectItem value="temporary">Temporary</SelectItem>
+                          <SelectItem value="any">Alla</SelectItem>
+                          <SelectItem value="full_time">Heltid</SelectItem>
+                          <SelectItem value="part_time">Deltid</SelectItem>
+                          <SelectItem value="contract">Konsult</SelectItem>
+                          <SelectItem value="internship">Praktik</SelectItem>
+                          <SelectItem value="temporary">Timanställning</SelectItem>
                         </SelectContent>
                       </Select>
                       <input type="hidden" name="employment_type" value={filters.employmentType} />
@@ -214,108 +202,50 @@ export function SearchForm({
                     {/* Location Flexibility */}
                     <div>
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Work location
+                        Arbetsplats
                       </label>
                       <Select value={filters.locationFlexibility} onValueChange={(v) => updateFilter("locationFlexibility", v)}>
-                        <SelectTrigger aria-label="Location flexibility" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
+                        <SelectTrigger aria-label="Arbetsplats" className="h-10 border-border/60">
+                          <SelectValue placeholder="Alla" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="on_site_only">On-site only</SelectItem>
+                          <SelectItem value="any">Alla</SelectItem>
+                          <SelectItem value="on_site_only">På plats</SelectItem>
                           <SelectItem value="hybrid">Hybrid</SelectItem>
-                          <SelectItem value="full_remote">Full remote</SelectItem>
+                          <SelectItem value="full_remote">Distans</SelectItem>
                         </SelectContent>
                       </Select>
                       <input type="hidden" name="location_flexibility" value={filters.locationFlexibility} />
                     </div>
 
-                    {/* Company Size */}
-                    <div>
-                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Company size
-                      </label>
-                      <Select value={filters.companySize} onValueChange={(v) => updateFilter("companySize", v)}>
-                        <SelectTrigger aria-label="Company size" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="startup">Startup</SelectItem>
-                          <SelectItem value="small">Small</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="large">Large</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <input type="hidden" name="company_size" value={filters.companySize} />
-                    </div>
-
-                    {/* Language Level */}
-                    <div>
-                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Language requirement
-                      </label>
-                      <Select value={filters.languageLevel} onValueChange={(v) => updateFilter("languageLevel", v)}>
-                        <SelectTrigger aria-label="Language level" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="english_sufficient">English sufficient</SelectItem>
-                          <SelectItem value="swedish_required">Swedish required</SelectItem>
-                          <SelectItem value="bilingual_preferred">Bilingual preferred</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <input type="hidden" name="language_level" value={filters.languageLevel} />
-                    </div>
-
                     {/* Application Process Type */}
                     <div>
                       <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Application type
+                        Ansökningstyp
                       </label>
                       <Select value={filters.applicationProcessType} onValueChange={(v) => updateFilter("applicationProcessType", v)}>
-                        <SelectTrigger aria-label="Application process type" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
+                        <SelectTrigger aria-label="Ansökningstyp" className="h-10 border-border/60">
+                          <SelectValue placeholder="Alla" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="quick_apply">Quick apply</SelectItem>
+                          <SelectItem value="any">Alla</SelectItem>
+                          <SelectItem value="quick_apply">Snabbansökan</SelectItem>
                           <SelectItem value="standard_ats">Standard ATS</SelectItem>
-                          <SelectItem value="complex_ats">Complex ATS</SelectItem>
+                          <SelectItem value="complex_ats">Komplex ATS</SelectItem>
                         </SelectContent>
                       </Select>
                       <input type="hidden" name="application_process_type" value={filters.applicationProcessType} />
                     </div>
 
-                    {/* Growth Potential */}
-                    <div>
-                      <label className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Growth potential
-                      </label>
-                      <Select value={filters.growthPotential} onValueChange={(v) => updateFilter("growthPotential", v)}>
-                        <SelectTrigger aria-label="Growth potential" className="h-10 border-border/60">
-                          <SelectValue placeholder="Any" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="any">Any</SelectItem>
-                          <SelectItem value="high">High</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="low">Low</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <input type="hidden" name="growth_potential" value={filters.growthPotential} />
-                    </div>
-
                     {/* Company Name */}
                     <div>
                       <label htmlFor="company" className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Company name
+                        Företagsnamn
                       </label>
                       <Input
                         id="company"
                         name="company"
-                        placeholder="e.g. Google, Spotify"
+                        placeholder="t.ex. Spotify, H&M"
                         className="h-10 border-border/60"
                       />
                     </div>
@@ -323,12 +253,12 @@ export function SearchForm({
                     {/* Occupation */}
                     <div>
                       <label htmlFor="occupation" className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Occupation
+                        Yrke
                       </label>
                       <Input
                         id="occupation"
                         name="occupation"
-                        placeholder="e.g. Developer, Designer"
+                        placeholder="t.ex. Utvecklare, Designer"
                         className="h-10 border-border/60"
                       />
                     </div>
@@ -336,7 +266,7 @@ export function SearchForm({
                     {/* Min Years Experience */}
                     <div>
                       <label htmlFor="required_experience_years_min" className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Min. years experience
+                        Min. antal års erfarenhet
                       </label>
                       <Input
                         id="required_experience_years_min"
@@ -352,29 +282,29 @@ export function SearchForm({
                     {/* AI Tags */}
                     <div>
                       <label htmlFor="ai_tags" className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        AI tags
+                        AI-taggar
                       </label>
                       <Input
                         id="ai_tags"
                         name="ai_tags"
-                        placeholder="e.g. junior, entry"
+                        placeholder="t.ex. junior, nybörjare"
                         className="h-10 border-border/60"
                       />
                     </div>
 
-                    {/* StegEtt Score */}
+                    {/* Entry-level Score */}
                     <div>
-                      <label htmlFor="steg_score" className="text-muted-foreground mb-1.5 block text-sm font-medium">
-                        Min. stegEtt score (0–1)
+                      <label htmlFor="entrylevel_score" className="text-muted-foreground mb-1.5 block text-sm font-medium">
+                        Min. nybörjarpoäng (1–10)
                       </label>
                       <Input
-                        id="steg_score"
-                        name="stegEtt_overall_score_min"
+                        id="entrylevel_score"
+                        name="entrylevel_score_min"
                         type="number"
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        placeholder="0.5"
+                        min={1}
+                        max={10}
+                        step={0.1}
+                        placeholder="5"
                         className="h-10 border-border/60"
                       />
                     </div>

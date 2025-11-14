@@ -11,9 +11,9 @@ export function PopularCities() {
     <section className=" ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 ">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Popular Cities</h2>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Populära Städer</h2>
           <p className="text-muted-foreground   max-w-2xl text-base sm:text-lg">
-            Browse jobs by location
+            Sök jobb efter plats
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export function PopularCities() {
                   <div className="p-4 text-center">
                     <h3 className="font-semibold text-sm">{city.name}</h3>
                     <p className="text-muted-foreground mt-1.5 text-xs font-medium">
-                      {city.jobCount.toLocaleString()} jobs
+                      {city.jobCount.toLocaleString()} jobb
                     </p>
                   </div>
                 </CardContent>

@@ -6,19 +6,24 @@ export  function CtaSection() {
       <div className="mx-auto max-w-7xl py-8 sm:px-6 sm:py-12 lg:px-8">
         <div className="relative isolate overflow-hidden bg-card px-6 py-24 text-center shadow-2xl sm:rounded-3xl sm:px-16">
           <h2 className="text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
-            Boost your productivity today
+            Redo att hitta ditt första jobb?
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-muted-foreground">
-            Incididunt sint fugiat pariatur cupidatat consectetur sit cillum anim id veniam aliqua proident excepteur
-            commodo do ea.
+            Ingen erfarenhet? Inget problem. Börja söka bland jobb som faktiskt är nybörjarvänliga med ärliga betyg och AI-klassificering.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Button asChild>
-              <a href="#">Get started</a>
+              <a href="#" onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('input[name="q"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => (document.querySelector('input[name="q"]') as HTMLInputElement)?.focus(), 500);
+              }}>
+                Börja söka jobb
+              </a>
             </Button>
             <Button variant="ghost" asChild>
               <a href="#" className="text-sm/6 font-semibold">
-                Learn more
+                Hur det fungerar
                 <span aria-hidden="true">→</span>
               </a>
             </Button>

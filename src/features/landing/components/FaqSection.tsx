@@ -1,38 +1,39 @@
 const faqs = [
   {
     id: 1,
-    question: "What's the best thing about Switzerland?",
+    question: "Varför är det så svårt att hitta entry-level jobb i Sverige?",
     answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Ungdomsarbetslösheten ligger på 28,6% och många 'entry-level' jobb kräver faktiskt 2-3 års erfarenhet. Det är en paradox där företag säger de behöver arbetskraft men ställer orimliga krav. Vi löser detta genom att ärligt klassificera varje jobb efter verklig nybörjarvänlighet.",
   },
   {
     id: 2,
-    question: 'How do you make holy water?',
+    question: 'Hur använder företag AI för att screena ansökningar?',
     answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'De flesta stora företag använder ATS-system (Applicant Tracking Systems) som automatiskt filtrerar CV:n baserat på nyckelord innan en människa ens ser dem. Systemet letar efter exakta matchningar mot jobbeskrivningen, vilket innebär att stavfel eller fel format kan diskvalificera dig direkt.',
   },
   {
     id: 3,
-    question: 'Why do you never see elephants hiding in trees?',
+    question: 'Är det okej att använda AI för min ansökan?',
     answer:
-      "Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      "Absolut! Företagen använder AI för att screena dig – det är inte fusk att anpassa sig, det är smart. Vi hjälper dig optimera ditt CV för att klara AI-screeningen och komma till de mänskliga rekryterarna. Det handlar om att spela på samma villkor.",
   },
   {
     id: 4,
-    question: 'What do you call someone with no body and no nose?',
-    answer: 'Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+    question: 'Varför kräver "nybörjare" jobb erfarenhet?',
+    answer:
+      'Detta är ett känt problem där 65% av unga mellan 20-25 år tycker kraven är helt orimliga. Många jobb märks som "entry-level" men har dolda krav på tidigare arbetslivserfarenhet. Vår AI-klassificering avslöjar dessa dolda krav så du kan fokusera på jobb som faktiskt är nybörjarvänliga.',
   },
   {
     id: 5,
-    question: "Why can't you hear a pterodactyl go to the bathroom?",
+    question: 'Hur kan er plattform hjälpa mig få mitt första jobb?',
     answer:
-      'Because the pee is silent. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'Vi klassificerar alla 80 000+ jobb efter verklig nybörjarvänlighet med ett poäng 1-10. Du ser exakt vilka jobb som kräver erfarenhet, vilka som accepterar utbildning istället, och vilka med komplexa ansökningsprocesser. Plus verktyg för att optimera ditt CV för ATS-system.',
   },
   {
     id: 6,
-    question: 'Why did the invisible man turn down the job offer?',
+    question: 'Vad betyder "entry-level score" på 1-10?',
     answer:
-      "He couldn't see himself doing it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+      'Vårt AI-system analyserar varje jobb och ger ett ärligt betyg där 10 är perfekt för nybörjare och 1 kräver mycket erfarenhet. Vi kollar på erfarenhetskrav, utbildningskrav, dolda krav, ansökningsprocessens komplexitet, och om företaget faktiskt anställer juniorer. Inga fler falska "entry-level" jobb.',
   },
 ]
 
@@ -40,13 +41,13 @@ export  function FaqSection() {
   return (
     <div className="">
       <div className="mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:px-8">
-        <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Frequently asked questions</h2>
+        <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">Vanliga frågor</h2>
         <p className="mt-6 max-w-2xl text-base/7 text-muted-foreground">
-          Have a different question and can't find the answer you're looking for? Reach out to our support team by{' '}
+          Har du en annan fråga och kan inte hitta svaret? Kontakta vårt supportteam genom att{' '}
           <a href="#" className="font-semibold text-primary hover:text-primary/80">
-            sending us an email
+            skicka oss ett mail
           </a>{' '}
-          and we'll get back to you as soon as we can.
+          så återkommer vi så snart vi kan.
         </p>
         <div className="mt-20">
           <dl className="space-y-16 sm:grid sm:grid-cols-2 sm:space-y-0 sm:gap-x-6 sm:gap-y-16 lg:grid-cols-3 lg:gap-x-10">

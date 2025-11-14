@@ -13,30 +13,30 @@ export interface NavItem {
 
 export const landingNavItems: NavItem[] = [
   {
-    label: "Explore",
+    label: "Utforska",
     bgClassName: "bg-primary",
     textClassName: "text-primary-foreground",
     links: [
-      { label: "Jobs", href: "/", ariaLabel: "Browse Jobs" },
-      { label: "Features", href: "#features", ariaLabel: "View Features" },
+      { label: "Jobb", href: "/", ariaLabel: "Bläddra bland jobb" },
+      { label: "Funktioner", href: "#features", ariaLabel: "Visa funktioner" },
     ],
   },
   {
-    label: "Resources",
+    label: "Resurser",
     bgClassName: "bg-emerald-500",
     textClassName: "text-white",
     links: [
-      { label: "How it works", href: "#how-it-works", ariaLabel: "How it works" },
-      { label: "Docs", href: "#", ariaLabel: "Documentation" },
+      { label: "Hur det fungerar", href: "#how-it-works", ariaLabel: "Hur det fungerar" },
+      { label: "Dokumentation", href: "#", ariaLabel: "Dokumentation" },
     ],
   },
   {
-    label: "Account",
+    label: "Konto",
     bgClassName: "bg-amber-500",
     textClassName: "text-white",
     links: [
-      { label: "Log in", href: "/login", ariaLabel: "Log in to your account" },
-      { label: "Sign up", href: "/signup", ariaLabel: "Create an account" },
+      { label: "Logga in", href: "/login", ariaLabel: "Logga in på ditt konto" },
+      { label: "Registrera dig", href: "/signup", ariaLabel: "Skapa ett konto" },
     ],
   },
 ];

@@ -7,10 +7,10 @@ export function BentoSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 ">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Everything you need for your job search
+            Allt du behöver för din jobbsökning
           </h2>
           <p className="text-muted-foreground  mt-3 max-w-2xl text-base sm:text-lg">
-            Streamline your job search with powerful tools and insights
+            Effektivisera din jobbsökning med kraftfulla verktyg och insikter
           </p>
         </div>
 

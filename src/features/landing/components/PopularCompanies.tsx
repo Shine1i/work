@@ -18,10 +18,10 @@ export function PopularCompanies() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 ">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Popular Companies
+            Populära Företag
           </h2>
           <p className="text-muted-foreground mt-2 max-w-2xl text-base sm:text-lg">
-            Top companies hiring right now
+            Topföretag som rekryterar nu
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export function PopularCompanies() {
                         {company.name}
                       </h3>
                       <p className="text-muted-foreground text-xs font-medium">
-                        {company.jobCount} {company.jobCount === 1 ? "job" : "jobs"}
+                        {company.jobCount} jobb
                       </p>
                     </div>
                   </CardContent>
