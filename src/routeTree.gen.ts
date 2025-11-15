@@ -14,6 +14,7 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as authenticatedRouteRouteImport } from "./routes/(authenticated)/route";
 import { Route as authPagesRouteRouteImport } from "./routes/(auth-pages)/route";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as JobsSearchRouteImport } from "./routes/jobs/search";
 import { Route as authPagesSignupRouteImport } from "./routes/(auth-pages)/signup";
 import { Route as authPagesLoginRouteImport } from "./routes/(auth-pages)/login";
 import { Route as authenticatedDashboardRouteRouteImport } from "./routes/(authenticated)/dashboard/route";
@@ -33,6 +34,11 @@ const authPagesRouteRoute = authPagesRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const JobsSearchRoute = JobsSearchRouteImport.update({
+  id: "/jobs/search",
+  path: "/jobs/search",
   getParentRoute: () => rootRouteImport,
 } as any);
 const authPagesSignupRoute = authPagesSignupRouteImport.update({
@@ -68,12 +74,14 @@ export interface FileRoutesByFullPath {
   "/dashboard": typeof authenticatedDashboardRouteRouteWithChildren;
   "/login": typeof authPagesLoginRoute;
   "/signup": typeof authPagesSignupRoute;
+  "/jobs/search": typeof JobsSearchRoute;
   "/dashboard/": typeof authenticatedDashboardIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof authenticatedRouteRouteWithChildren;
   "/login": typeof authPagesLoginRoute;
   "/signup": typeof authPagesSignupRoute;
+  "/jobs/search": typeof JobsSearchRoute;
   "/dashboard": typeof authenticatedDashboardIndexRoute;
 }
 export interface FileRoutesById {
@@ -84,13 +92,20 @@ export interface FileRoutesById {
   "/(authenticated)/dashboard": typeof authenticatedDashboardRouteRouteWithChildren;
   "/(auth-pages)/login": typeof authPagesLoginRoute;
   "/(auth-pages)/signup": typeof authPagesSignupRoute;
+  "/jobs/search": typeof JobsSearchRoute;
   "/(authenticated)/dashboard/": typeof authenticatedDashboardIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/dashboard" | "/login" | "/signup" | "/dashboard/";
+  fullPaths:
+    | "/"
+    | "/dashboard"
+    | "/login"
+    | "/signup"
+    | "/jobs/search"
+    | "/dashboard/";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/signup" | "/dashboard";
+  to: "/" | "/login" | "/signup" | "/jobs/search" | "/dashboard";
   id:
     | "__root__"
     | "/"
@@ -99,6 +114,7 @@ export interface FileRouteTypes {
     | "/(authenticated)/dashboard"
     | "/(auth-pages)/login"
     | "/(auth-pages)/signup"
+    | "/jobs/search"
     | "/(authenticated)/dashboard/";
   fileRoutesById: FileRoutesById;
 }
@@ -106,6 +122,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
   authPagesRouteRoute: typeof authPagesRouteRouteWithChildren;
   authenticatedRouteRoute: typeof authenticatedRouteRouteWithChildren;
+  JobsSearchRoute: typeof JobsSearchRoute;
 }
 export interface FileServerRoutesByFullPath {
   "/api/auth/$": typeof ApiAuthSplatServerRoute;
@@ -150,6 +167,13 @@ declare module "@tanstack/react-router" {
       path: "/";
       fullPath: "/";
       preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/jobs/search": {
+      id: "/jobs/search";
+      path: "/jobs/search";
+      fullPath: "/jobs/search";
+      preLoaderRoute: typeof JobsSearchRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/(auth-pages)/signup": {
@@ -238,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authPagesRouteRoute: authPagesRouteRouteWithChildren,
   authenticatedRouteRoute: authenticatedRouteRouteWithChildren,
+  JobsSearchRoute: JobsSearchRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

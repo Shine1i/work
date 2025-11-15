@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { motion } from "motion/react";
 import { useState, type FormEvent } from "react";
@@ -48,6 +49,7 @@ export function SearchForm({
   className?: string;
   labelledById?: string;
 }) {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<FilterState>({
     employmentType: "any",
     experienceLevel: "any",
@@ -67,13 +69,21 @@ export function SearchForm({
     ) as SearchFormValues;
 
     // include controlled selects
-    payload.employment_type = filters.employmentType;
-    payload.experience_level = filters.experienceLevel;
-    payload.location_flexibility = filters.locationFlexibility;
-    payload.application_process_type = filters.applicationProcessType;
+    payload.employment_type = filters.employmentType !== "any" ? filters.employmentType : undefined;
+    payload.experience_level = filters.experienceLevel !== "any" ? filters.experienceLevel : undefined;
+    payload.location_flexibility = filters.locationFlexibility !== "any" ? filters.locationFlexibility : undefined;
+    payload.application_process_type = filters.applicationProcessType !== "any" ? filters.applicationProcessType : undefined;
 
-    // UI only for now
-    console.log("searchFormSubmit", payload);
+    // Remove empty values and prepare search params
+    const searchParams = Object.fromEntries(
+      Object.entries(payload).filter(([_, v]) => v !== undefined && v !== ""),
+    ) as Record<string, string>;
+
+    // Navigate to search page with filters
+    navigate({
+      to: "/jobs/search",
+      search: { ...searchParams, page: 1 } as any,
+    });
   }
 
   return (
