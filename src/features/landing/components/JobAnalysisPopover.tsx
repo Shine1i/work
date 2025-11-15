@@ -78,7 +78,7 @@ export function JobAnalysisPopover({ job }: JobAnalysisPopoverProps) {
           Bedömning
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent side="right"   className="w-80">
         <div className="space-y-4">
           {/* Gaming-style card with key metrics */}
           <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-lg border border-primary/20 p-4 backdrop-blur-sm">

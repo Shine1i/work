@@ -1,13 +1,13 @@
 import { motion } from "motion/react";
-import { TypingAnimation } from "~/components/ui/typing-animation";
 import { Highlighter } from "~/components/ui/highlighter";
+import { TypingAnimation } from "~/components/ui/typing-animation";
 
 export function HeroContent({ headlineId }: { headlineId: string }) {
   return (
     <div className="text-center">
       <motion.h1
         id={headlineId}
-        className="text-4xl font-extrabold tracking-tight text-balance sm:text-5xl md:text-6xl"
+        className="text-2xl font-extrabold tracking-tight text-balance sm:text-3xl md:text-5xl"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.65, ease: "easeOut" }}
@@ -29,28 +29,20 @@ export function HeroContent({ headlineId }: { headlineId: string }) {
       </motion.h1>
 
       <motion.p
-        className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-foreground/90 sm:text-base"
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-      >
-        Företag använder AI för att screena din ansökan – det är inte fusk att anpassa sig, det är smart.
-      </motion.p>
-
-      <motion.p
         className="text-muted-foreground mx-auto mt-4 hidden max-w-3xl text-base text-pretty sm:text-lg md:block md:text-xl"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
       >
-        Sök bland{" "}
+        Företag{" "}
         <Highlighter action="underline" color="#FF9800">
-          80 000+ klassificerade jobb
+          använder AI
         </Highlighter>{" "}
-        med ärliga entry-level betyg. Ingen erfarenhet? Svårt med CV? Vet inte var du passar?{" "}
-        <Highlighter action="highlight" color="#87CEFA">
-          Vi hjälper dig.
-        </Highlighter>
+        för att screena din ansökan –{" "}
+        <Highlighter action="underline" color="#6e56cf" className="">
+          det är inte fusk
+        </Highlighter>{" "}
+        att anpassa sig, det är smart.
       </motion.p>
     </div>
   );

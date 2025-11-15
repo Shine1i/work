@@ -3,6 +3,20 @@ import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
 import { Button } from '~/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
+import { authQueryOptions } from '~/features/auth/api/queries';
+import authClient from '~/lib/auth/auth-client';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
+import { LogOut, User } from 'lucide-react';
 
 type CardNavLink = {
   label: string;
@@ -41,6 +55,21 @@ const CardNav: React.FC<CardNavProps> = ({
   const navRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const { data: user } = useQuery(authQueryOptions());
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    window.location.href = '/';
+  };
+
+  const getUserInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   const calculateHeight = () => {
     const navEl = navRef.current;
@@ -154,7 +183,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
   return (
     <div
-      className={`card-nav-container absolute left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] ${className}`}
+      className={`card-nav-container absolute left-1/2 -translate-x-1/2 mx-auto w-full max-w-7xl px-4 py-0 sm:px-6 lg:px-8 z-[99] top-[1.2em] md:top-[2em] ${className}`}
     >
       <nav
         ref={navRef}
@@ -186,11 +215,51 @@ const CardNav: React.FC<CardNavProps> = ({
             <img src={logo} alt={logoAlt} className="logo h-[28px]" />
           </div>
 
-          <Button
-            className="card-nav-cta-button hidden md:inline-flex rounded-[calc(0.75rem-0.2rem)] px-4 h-full"
-          >
-            Get Started
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="card-nav-cta-button hidden md:inline-flex rounded-[calc(0.75rem-0.2rem)] px-2 h-full gap-2"
+                >
+                  <Avatar className="size-7">
+                    <AvatarImage src={user.image || undefined} alt={user.name} />
+                    <AvatarFallback>{getUserInitials(user.name)}</AvatarFallback>
+                  </Avatar>
+                  <span className="hidden lg:inline-block">{user.name}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="cursor-pointer">
+                    <User className="mr-2 size-4" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} variant="destructive">
+                  <LogOut className="mr-2 size-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              className="card-nav-cta-button hidden md:inline-flex rounded-[calc(0.75rem-0.2rem)] px-4 h-full"
+              asChild
+            >
+              <Link to="/login">Get Started</Link>
+            </Button>
+          )}
         </div>
 
         <div

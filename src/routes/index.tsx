@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { ThemeToggle } from "~/components/app/theme-toggle";
 import { AnimatedGridPattern } from "~/components/magicui/animated-grid-pattern";
 import { landingNavConfig, landingNavItems } from "~/features/navigation/config/config";
-import { UserStatus } from "~/features/auth/components/UserStatus";
 import { HeroSection } from "~/features/landing/components/HeroSection";
 import { BentoSection } from "~/features/landing/components/BentoSection";
 import { BlogSection } from "~/features/landing/components/BlogSection";
@@ -87,10 +86,6 @@ function HomePage() {
                 </a>
                 <ThemeToggle />
               </div>
-
-              <Suspense fallback={<div className="py-6">Loading user...</div>}>
-                <UserStatus />
-              </Suspense>
             </div>
           </div>
         </div>
