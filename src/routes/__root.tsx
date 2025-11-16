@@ -17,6 +17,8 @@ import appCss from "~/styles.css?url";
 import { Footer } from "~/components/app/Footer";
 import { ThemeProvider } from "~/components/app/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
+import CardNav from "~/features/navigation/components/CardNav";
+import { landingNavConfig, landingNavItems } from "~/features/navigation/config/config";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -56,8 +58,15 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
-    </RootDocument>
+      <CardNav
+        logo={landingNavConfig.logo}
+        logoAlt={landingNavConfig.logoAlt}
+        items={landingNavItems}
+      />
+      <div className="">
+        <Outlet />
+      </div>
+    </RootDocument >
   );
 }
 

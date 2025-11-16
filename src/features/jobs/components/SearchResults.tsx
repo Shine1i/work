@@ -1,5 +1,5 @@
 import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -17,6 +17,7 @@ import {
   SheetTrigger,
 } from "~/components/ui/sheet";
 import type { SearchParams, SearchResponse } from "../types/search";
+import { JobSearchBar } from "./JobSearchBar";
 import { JobsList } from "./JobsList";
 import { SearchFilters } from "./SearchFilters";
 
@@ -27,14 +28,32 @@ interface SearchResultsProps {
 
 export function SearchResults({ data, params }: SearchResultsProps) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [currentFilters, setCurrentFilters] = useState<Partial<SearchParams>>({});
+
+  // Callback to update filters from sidebar
+  const handleFiltersChange = useCallback((filters: Partial<SearchParams>) => {
+    setCurrentFilters(filters);
+  }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container  mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* Search Bar */}
+      <div className="mb-6">
+        <JobSearchBar
+          initialValues={{
+            q: params.q,
+            location: params.location,
+            experience_level: params.experience_level,
+          }}
+          currentFilters={currentFilters}
+        />
+      </div>
+
       <div className="flex flex-col gap-6 lg:flex-row">
         {/* Desktop Sidebar */}
         <aside className="hidden w-full lg:block lg:w-64 lg:flex-shrink-0">
           <div className="sticky top-4">
-            <SearchFilters params={params} />
+            <SearchFilters initialParams={params} onFiltersChange={handleFiltersChange} />
           </div>
         </aside>
 
@@ -53,7 +72,7 @@ export function SearchResults({ data, params }: SearchResultsProps) {
                 <SheetDescription>Refine your job search with filters</SheetDescription>
               </SheetHeader>
               <div className="mt-6">
-                <SearchFilters params={params} />
+                <SearchFilters initialParams={params} onFiltersChange={handleFiltersChange} />
               </div>
             </SheetContent>
           </Sheet>

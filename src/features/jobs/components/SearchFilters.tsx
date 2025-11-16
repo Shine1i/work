@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -20,36 +21,52 @@ import {
 import type { SearchParams } from "../types/search";
 
 interface SearchFiltersProps {
-  params: SearchParams;
+  initialParams: SearchParams;
+  onFiltersChange: (filters: Partial<SearchParams>) => void;
 }
 
-export function SearchFilters({ params }: SearchFiltersProps) {
+export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersProps) {
   const navigate = useNavigate();
+
+  // Local state for filters (doesn't trigger navigation)
+  const [filters, setFilters] = useState<Partial<SearchParams>>({
+    employment_type: initialParams.employment_type,
+    experience_level: initialParams.experience_level,
+    location_flexibility: initialParams.location_flexibility,
+    application_process_type: initialParams.application_process_type,
+    salary_min: initialParams.salary_min,
+    salary_max: initialParams.salary_max,
+    entrylevel_score_min: initialParams.entrylevel_score_min,
+    experience_years_max: initialParams.experience_years_max,
+    education_replaces_experience: initialParams.education_replaces_experience,
+    no_assessment: initialParams.no_assessment,
+    no_drivers_license: initialParams.no_drivers_license,
+  });
+
+  // Update parent when filters change
+  useEffect(() => {
+    onFiltersChange(filters);
+  }, [filters, onFiltersChange]);
 
   const updateFilter = (key: keyof SearchParams, value: string | number | boolean | undefined) => {
     // Convert "any" to undefined to remove filter
     const filterValue = value === "any" ? undefined : value;
 
-    navigate({
-      to: "/jobs/search",
-      search: (prev) => ({
-        ...prev,
-        [key]: filterValue,
-        page: 1, // Reset to first page on filter change
-      }),
-    });
+    setFilters((prev) => ({
+      ...prev,
+      [key]: filterValue,
+    }));
   };
 
   const clearFilters = () => {
+    // Navigate immediately with cleared filters
     navigate({
       to: "/jobs/search",
       search: { page: 1 },
     });
   };
 
-  const hasActiveFilters = Object.keys(params).some(
-    (key) => key !== "page" && params[key as keyof SearchParams] !== undefined,
-  );
+  const hasActiveFilters = Object.values(filters).some((value) => value !== undefined);
 
   return (
     <div className="flex flex-col gap-4">
@@ -73,7 +90,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
           <AccordionContent>
             <div className="space-y-2">
               <Select
-                value={params.employment_type || "any"}
+                value={filters.employment_type || "any"}
                 onValueChange={(value) => updateFilter("employment_type", value)}
               >
                 <SelectTrigger>
@@ -98,7 +115,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
           <AccordionContent>
             <div className="space-y-2">
               <Select
-                value={params.experience_level || "any"}
+                value={filters.experience_level || "any"}
                 onValueChange={(value) => updateFilter("experience_level", value)}
               >
                 <SelectTrigger>
@@ -122,7 +139,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
           <AccordionContent>
             <div className="space-y-2">
               <Select
-                value={params.location_flexibility || "any"}
+                value={filters.location_flexibility || "any"}
                 onValueChange={(value) => updateFilter("location_flexibility", value)}
               >
                 <SelectTrigger>
@@ -145,7 +162,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
           <AccordionContent>
             <div className="space-y-2">
               <Select
-                value={params.application_process_type || "any"}
+                value={filters.application_process_type || "any"}
                 onValueChange={(value) => updateFilter("application_process_type", value)}
               >
                 <SelectTrigger>
@@ -175,7 +192,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
                   id="salary_min"
                   type="number"
                   placeholder="0"
-                  value={params.salary_min || ""}
+                  value={filters.salary_min || ""}
                   onChange={(e) =>
                     updateFilter("salary_min", e.target.value ? Number(e.target.value) : undefined)
                   }
@@ -189,7 +206,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
                   id="salary_max"
                   type="number"
                   placeholder="100000"
-                  value={params.salary_max || ""}
+                  value={filters.salary_max || ""}
                   onChange={(e) =>
                     updateFilter("salary_max", e.target.value ? Number(e.target.value) : undefined)
                   }
@@ -210,7 +227,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
                 max="1"
                 step="0.1"
                 placeholder="0.5"
-                value={params.entrylevel_score_min || ""}
+                value={filters.entrylevel_score_min || ""}
                 onChange={(e) =>
                   updateFilter("entrylevel_score_min", e.target.value ? Number(e.target.value) : undefined)
                 }
@@ -229,7 +246,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
                 type="number"
                 min="0"
                 placeholder="2"
-                value={params.experience_years_max || ""}
+                value={filters.experience_years_max || ""}
                 onChange={(e) =>
                   updateFilter("experience_years_max", e.target.value ? Number(e.target.value) : undefined)
                 }
@@ -246,7 +263,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="education_replaces"
-                  checked={params.education_replaces_experience || false}
+                  checked={filters.education_replaces_experience || false}
                   onCheckedChange={(checked: boolean) =>
                     updateFilter("education_replaces_experience", checked === true ? true : undefined)
                   }
@@ -258,7 +275,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="no_assessment"
-                  checked={params.no_assessment || false}
+                  checked={filters.no_assessment || false}
                   onCheckedChange={(checked: boolean) =>
                     updateFilter("no_assessment", checked === true ? true : undefined)
                   }
@@ -270,7 +287,7 @@ export function SearchFilters({ params }: SearchFiltersProps) {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="no_license"
-                  checked={params.no_drivers_license || false}
+                  checked={filters.no_drivers_license || false}
                   onCheckedChange={(checked: boolean) =>
                     updateFilter("no_drivers_license", checked === true ? true : undefined)
                   }

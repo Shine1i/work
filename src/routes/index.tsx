@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { ThemeToggle } from "~/components/app/theme-toggle";
 import { AnimatedGridPattern } from "~/components/magicui/animated-grid-pattern";
-import { landingNavConfig, landingNavItems } from "~/features/navigation/config/config";
 import { HeroSection } from "~/features/landing/components/HeroSection";
 import { BentoSection } from "~/features/landing/components/BentoSection";
 import { BlogSection } from "~/features/landing/components/BlogSection";
@@ -11,7 +10,6 @@ import { FaqSection } from "~/features/landing/components/FaqSection";
 import { PopularCities } from "~/features/landing/components/PopularCategories";
 import { PopularCompanies } from "~/features/landing/components/PopularCompanies";
 import { RecentJobs } from "~/features/landing/components/RecentJobs";
-import CardNav from "~/features/navigation/components/CardNav";
 import { popularCitiesQueryOptions } from "~/features/landing/api/cities/queries";
 import { popularCompaniesQueryOptions } from "~/features/landing/api/companies/queries";
 import { recentJobsQueryOptions } from "~/features/landing/api/jobs/queries";
@@ -29,11 +27,6 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   return (
     <div className="flex min-h-svh flex-col">
-      <CardNav
-        logo={landingNavConfig.logo}
-        logoAlt={landingNavConfig.logoAlt}
-        items={landingNavItems}
-      />
       <HeroSection />
 
       {/* Rest of the page with AnimatedGridPattern background */}
