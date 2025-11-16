@@ -1,163 +1,125 @@
 import { createServerFn } from "@tanstack/react-start";
-import { and, asc, count, desc, eq, gte, ilike, isNull, lte, not, or, sql } from "drizzle-orm";
-import { db } from "~/lib/db";
-import { aiClassifications, companies, jobPostings } from "~/lib/db/schema";
+import { getJobsIndex } from "../../utils/meilisearch";
 import type { SearchParams, SearchResponse } from "../../types/search";
 
-const PER_PAGE = 15;
+const PER_PAGE = 5;
 
 export const $searchJobs = createServerFn({ method: "GET" })
   .validator((data: SearchParams) => data)
   .handler(async ({ data: params }) => {
     const page = params.page || 1;
-    const offset = (page - 1) * PER_PAGE;
 
-    // Build dynamic WHERE conditions
-    const conditions = [];
+    // Build filter array for Meilisearch
+    const filters: string[] = [];
 
-    // Text search on query
-    if (params.q) {
-      conditions.push(
-        or(
-          ilike(jobPostings.title, `%${params.q}%`),
-          ilike(jobPostings.descriptionText, `%${params.q}%`),
-          ilike(jobPostings.occupation, `%${params.q}%`),
-        ),
-      );
-    }
-
-    // Location search
+    // Text search on location
     if (params.location) {
-      conditions.push(ilike(jobPostings.locationText, `%${params.location}%`));
+      filters.push(`location_text = "${params.location}"`);
     }
 
-    // Company search
+    // Text search on company
     if (params.company) {
-      conditions.push(ilike(companies.name, `%${params.company}%`));
+      filters.push(`company_name = "${params.company}"`);
     }
 
     // Enum filters
     if (params.employment_type) {
-      conditions.push(eq(jobPostings.employmentType, params.employment_type));
+      filters.push(`employment_type = "${params.employment_type}"`);
     }
 
     if (params.experience_level) {
-      conditions.push(eq(aiClassifications.experienceLevel, params.experience_level));
+      filters.push(`experience_level = "${params.experience_level}"`);
     }
 
     if (params.location_flexibility) {
-      conditions.push(eq(aiClassifications.locationFlexibility, params.location_flexibility));
+      filters.push(`location_flexibility = "${params.location_flexibility}"`);
     }
 
     if (params.application_process_type) {
-      conditions.push(eq(aiClassifications.applicationProcessType, params.application_process_type));
+      filters.push(`application_process_type = "${params.application_process_type}"`);
     }
 
     // Range filters
-    if (params.salary_min !== undefined) {
-      conditions.push(gte(jobPostings.averageSalary, params.salary_min));
-    }
-
-    if (params.salary_max !== undefined) {
-      conditions.push(lte(jobPostings.averageSalary, params.salary_max));
+    if (params.salary_min !== undefined && params.salary_max !== undefined) {
+      filters.push(`average_salary >= ${params.salary_min} AND average_salary <= ${params.salary_max}`);
+    } else if (params.salary_min !== undefined) {
+      filters.push(`average_salary >= ${params.salary_min}`);
+    } else if (params.salary_max !== undefined) {
+      filters.push(`average_salary <= ${params.salary_max}`);
     }
 
     if (params.entrylevel_score_min !== undefined) {
-      conditions.push(gte(aiClassifications.entrylevelScore, params.entrylevel_score_min));
+      filters.push(`entrylevel_score >= ${params.entrylevel_score_min}`);
     }
 
     if (params.experience_years_max !== undefined) {
-      conditions.push(lte(aiClassifications.requiredExperienceYearsMax, params.experience_years_max));
+      filters.push(`required_experience_years_max <= ${params.experience_years_max}`);
     }
 
     // Boolean filters
     if (params.education_replaces_experience) {
-      conditions.push(eq(aiClassifications.educationCanReplaceExperience, true));
+      filters.push(`education_can_replace_experience = true`);
     }
 
     if (params.no_assessment) {
-      conditions.push(
-        or(eq(aiClassifications.requiresAssessment, false), isNull(aiClassifications.requiresAssessment)),
-      );
+      filters.push(`requires_assessment = false`);
     }
 
     if (params.no_drivers_license) {
-      conditions.push(
-        or(eq(aiClassifications.requiresDriversLicense, false), isNull(aiClassifications.requiresDriversLicense)),
-      );
+      filters.push(`requires_drivers_license = false`);
     }
 
     // AI tags filter (array contains)
     if (params.ai_tags) {
-      conditions.push(sql`${aiClassifications.aiTags} @> ARRAY[${params.ai_tags}]::text[]`);
+      filters.push(`ai_tags = "${params.ai_tags}"`);
     }
-
-    // Build WHERE clause
-    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
     // Determine sort order
-    let orderByClause;
-    if (params.q) {
-      // Priority: title match > entry level score
-      orderByClause = [
-        sql`CASE WHEN ${jobPostings.title} ILIKE ${`%${params.q}%`} THEN 1 ELSE 2 END`,
-        desc(aiClassifications.entrylevelScore),
-        desc(jobPostings.publishedAt),
-      ];
-    } else {
-      // Default: newest first
-      orderByClause = [desc(jobPostings.publishedAt)];
-    }
+    const sort: string[] = params.q
+      ? [] // Let Meilisearch handle relevance ranking when there's a query
+      : ["published_at:desc"]; // Default: newest first
 
-    // Get total count
-    const [{ value: total }] = await db
-      .select({ value: count() })
-      .from(jobPostings)
-      .innerJoin(companies, eq(jobPostings.companyId, companies.id))
-      .innerJoin(aiClassifications, eq(jobPostings.id, aiClassifications.jobPostingId))
-      .where(whereClause);
+    // Perform search
+    const index = getJobsIndex();
+    const searchResult = await index.search(params.q || "", {
+      filter: filters.length > 0 ? filters : undefined,
+      sort,
+      page,
+      hitsPerPage: PER_PAGE,
+    });
 
-    // Fetch jobs
-    const jobs = await db
-      .select({
-        id: jobPostings.id,
-        title: jobPostings.title,
-        locationText: jobPostings.locationText,
-        publishedAt: jobPostings.publishedAt,
-        applicationUrl: jobPostings.applicationUrl,
-        occupation: jobPostings.occupation,
-        employmentType: jobPostings.employmentType,
-        companyName: companies.name,
-        companyLogoUrl: companies.companyLogoUrl,
-        experienceLevel: aiClassifications.experienceLevel,
-        aiTags: aiClassifications.aiTags,
-        entrylevelScore: aiClassifications.entrylevelScore,
-        entrylevelReasoning: aiClassifications.entrylevelReasoning,
-        implicitRequirements: aiClassifications.implicitRequirements,
-        locationFlexibility: aiClassifications.locationFlexibility,
-        educationCanReplaceExperience: aiClassifications.educationCanReplaceExperience,
-        requiredExperienceYearsMin: aiClassifications.requiredExperienceYearsMin,
-        requiredExperienceYearsMax: aiClassifications.requiredExperienceYearsMax,
-        applicationProcessType: aiClassifications.applicationProcessType,
-        requiresAssessment: aiClassifications.requiresAssessment,
-        requiresDriversLicense: aiClassifications.requiresDriversLicense,
-        classificationConfidence: aiClassifications.classificationConfidence,
-      })
-      .from(jobPostings)
-      .innerJoin(companies, eq(jobPostings.companyId, companies.id))
-      .innerJoin(aiClassifications, eq(jobPostings.id, aiClassifications.jobPostingId))
-      .where(whereClause)
-      .orderBy(...orderByClause)
-      .limit(PER_PAGE)
-      .offset(offset);
-
-    const totalPages = Math.ceil(total / PER_PAGE);
+    // Map response to match existing SearchResponse type
+    // When using page-based pagination, Meilisearch returns totalHits instead of estimatedTotalHits
+    const totalHits = searchResult.totalHits ?? 0;
 
     const response: SearchResponse = {
-      jobs,
-      total,
+      jobs: searchResult.hits.map((hit: any) => ({
+        id: hit.id,
+        title: hit.title,
+        locationText: hit.location_text,
+        publishedAt: hit.published_at,
+        applicationUrl: hit.application_url,
+        occupation: hit.occupation,
+        employmentType: hit.employment_type,
+        companyName: hit.company_name,
+        companyLogoUrl: hit.company_logo_url,
+        experienceLevel: hit.experience_level,
+        aiTags: hit.ai_tags,
+        entrylevelScore: hit.entrylevel_score,
+        entrylevelReasoning: hit.entrylevel_reasoning,
+        implicitRequirements: hit.implicit_requirements,
+        locationFlexibility: hit.location_flexibility,
+        educationCanReplaceExperience: hit.education_can_replace_experience,
+        requiredExperienceYearsMin: hit.required_experience_years_min,
+        requiredExperienceYearsMax: hit.required_experience_years_max,
+        applicationProcessType: hit.application_process_type,
+        requiresAssessment: hit.requires_assessment,
+        requiresDriversLicense: hit.requires_drivers_license,
+        classificationConfidence: hit.classification_confidence,
+      })),
+      total: totalHits,
       page,
-      totalPages,
+      totalPages: Math.ceil(totalHits / PER_PAGE),
       perPage: PER_PAGE,
     };
 

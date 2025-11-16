@@ -7,6 +7,10 @@ export const env = createEnv({
     VITE_BASE_URL: z.url().default("http://localhost:3000"),
     BETTER_AUTH_SECRET: z.string().min(1),
 
+    // Meilisearch
+    MEILISEARCH_URL: z.url(),
+    MEILISEARCH_API_KEY: z.string().min(1),
+
     // OAuth2 providers, optional, update as needed
     GITHUB_CLIENT_ID: z.string().optional(),
     GITHUB_CLIENT_SECRET: z.string().optional(),
