@@ -28,7 +28,6 @@ export function JobSearchBar({ initialValues = {}, currentFilters = {} }: JobSea
     // Get search bar values
     const q = formData.get("q") as string;
     const location = formData.get("location") as string;
-    const experience_level = formData.get("experience_level") as string;
 
     // Merge with current sidebar filters
     const searchParams: any = {
@@ -39,7 +38,6 @@ export function JobSearchBar({ initialValues = {}, currentFilters = {} }: JobSea
     // Add search bar values if not empty
     if (q && q.trim()) searchParams.q = q.trim();
     if (location && location.trim()) searchParams.location = location.trim();
-    if (experience_level && experience_level !== "any") searchParams.experience_level = experience_level;
 
     // Navigate with combined params
     navigate({
@@ -92,27 +90,6 @@ export function JobSearchBar({ initialValues = {}, currentFilters = {} }: JobSea
                 className="h-11 rounded-md bg-transparent pl-9"
               />
             </div>
-
-            <div className="bg-border hidden w-px self-stretch md:block" />
-
-            {/* Experience Level */}
-            <div className="w-full min-w-0 md:w-[200px] md:flex-none">
-              <label className="sr-only">Experience Level</label>
-              <Select name="experience_level" defaultValue={initialValues.experience_level || "any"}>
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Any level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="any">Any level</SelectItem>
-                  <SelectItem value="true_entry_level">True Entry Level</SelectItem>
-                  <SelectItem value="low_experience">Low Experience</SelectItem>
-                  <SelectItem value="experience_required">Experience Required</SelectItem>
-                  <SelectItem value="internship">Internship</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="bg-border hidden w-px self-stretch md:block" />
 
             {/* Search Button */}
             <Button type="submit" className="h-11 md:w-auto">

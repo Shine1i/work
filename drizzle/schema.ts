@@ -4,7 +4,7 @@ import { sql } from "drizzle-orm"
 export const applicationProcessTypeEnum = pgEnum("application_process_type_enum", ['quick_apply', 'standard_ats', 'complex_ats'])
 export const experienceLevelEnum = pgEnum("experience_level_enum", ['true_entry_level', 'low_experience', 'experience_required', 'internship'])
 export const jobStatusEnum = pgEnum("job_status_enum", ['pending', 'running', 'completed', 'failed', 'stopped'])
-export const locationFlexibilityEnum = pgEnum("location_flexibility_enum", ['on_site_only', 'hybrid', 'full_remote', 'unknown'])
+export const locationFlexibilityEnum = pgEnum("location_flexibility_enum", ['on_site_only', 'hybrid', 'full_remote'])
 
 
 export const alembicVersion = pgTable("alembic_version", {

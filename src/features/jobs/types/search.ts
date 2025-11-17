@@ -21,7 +21,7 @@ export const searchParamsSchema = z.object({
   // Range filters
   salary_min: z.number().optional(),
   salary_max: z.number().optional(),
-  entrylevel_score_min: z.number().min(0).max(1).optional(),
+  entrylevel_score_min: z.number().min(0).max(10).optional(),
   experience_years_max: z.number().optional(),
 
   // Boolean filters

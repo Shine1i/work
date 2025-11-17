@@ -73,12 +73,12 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
       <div className="flex items-center justify-between">
         <h3 className="flex items-center gap-2 text-lg font-semibold">
           <SlidersHorizontal className="size-5" />
-          Filters
+          Filter
         </h3>
         {hasActiveFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters}>
             <X className="mr-1 size-4" />
-            Clear All
+            Rensa alla
           </Button>
         )}
       </div>
@@ -86,7 +86,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
       <Accordion type="multiple" defaultValue={["employment", "experience", "location"]} className="w-full">
         {/* Employment Type */}
         <AccordionItem value="employment">
-          <AccordionTrigger>Employment Type</AccordionTrigger>
+          <AccordionTrigger>Anställningstyp</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Select
@@ -94,15 +94,15 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                 onValueChange={(value) => updateFilter("employment_type", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any" />
+                  <SelectValue placeholder="Alla" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="any">Any</SelectItem>
-                  <SelectItem value="Full-time">Full-time</SelectItem>
-                  <SelectItem value="Part-time">Part-time</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
-                  <SelectItem value="Internship">Internship</SelectItem>
-                  <SelectItem value="Temporary">Temporary</SelectItem>
+                  <SelectItem value="any">Alla</SelectItem>
+                  <SelectItem value="full_time">Heltid</SelectItem>
+                  <SelectItem value="part_time">Deltid</SelectItem>
+                  <SelectItem value="contract">Konsult</SelectItem>
+                  <SelectItem value="internship">Praktik</SelectItem>
+                  <SelectItem value="temporary">Tillfällig</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -111,7 +111,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Experience Level */}
         <AccordionItem value="experience">
-          <AccordionTrigger>Experience Level</AccordionTrigger>
+          <AccordionTrigger>Erfarenhetsnivå</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Select
@@ -119,14 +119,14 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                 onValueChange={(value) => updateFilter("experience_level", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any" />
+                  <SelectValue placeholder="Alla" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="any">Any</SelectItem>
-                  <SelectItem value="true_entry_level">True Entry Level</SelectItem>
-                  <SelectItem value="low_experience">Low Experience</SelectItem>
-                  <SelectItem value="experience_required">Experience Required</SelectItem>
-                  <SelectItem value="internship">Internship</SelectItem>
+                  <SelectItem value="any">Alla</SelectItem>
+                  <SelectItem value="true_entry_level">Verklig nybörjarnivå</SelectItem>
+                  <SelectItem value="low_experience">Låg erfarenhet</SelectItem>
+                  <SelectItem value="experience_required">Erfarenhet krävs</SelectItem>
+                  <SelectItem value="internship">Praktik</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -135,7 +135,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Location Flexibility */}
         <AccordionItem value="location">
-          <AccordionTrigger>Work Location</AccordionTrigger>
+          <AccordionTrigger>Arbetsplats</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Select
@@ -143,13 +143,13 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                 onValueChange={(value) => updateFilter("location_flexibility", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any" />
+                  <SelectValue placeholder="Alla" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="any">Any</SelectItem>
-                  <SelectItem value="on_site_only">On-site Only</SelectItem>
+                  <SelectItem value="any">Alla</SelectItem>
+                  <SelectItem value="on_site_only">Endast på plats</SelectItem>
                   <SelectItem value="hybrid">Hybrid</SelectItem>
-                  <SelectItem value="full_remote">Full Remote</SelectItem>
+                  <SelectItem value="full_remote">Helt fjärr</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -158,7 +158,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Application Type */}
         <AccordionItem value="application">
-          <AccordionTrigger>Application Type</AccordionTrigger>
+          <AccordionTrigger>Ansökningstyp</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Select
@@ -166,13 +166,13 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                 onValueChange={(value) => updateFilter("application_process_type", value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Any" />
+                  <SelectValue placeholder="Alla" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="any">Any</SelectItem>
-                  <SelectItem value="quick_apply">Quick Apply</SelectItem>
+                  <SelectItem value="any">Alla</SelectItem>
+                  <SelectItem value="quick_apply">Snabb ansökan</SelectItem>
                   <SelectItem value="standard_ats">Standard ATS</SelectItem>
-                  <SelectItem value="complex_ats">Complex ATS</SelectItem>
+                  <SelectItem value="complex_ats">Komplex ATS</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -181,7 +181,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Salary Range */}
         <AccordionItem value="salary">
-          <AccordionTrigger>Salary Range (SEK)</AccordionTrigger>
+          <AccordionTrigger>Löneintervall (SEK)</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3">
               <div>
@@ -218,28 +218,28 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Entry Level Score */}
         <AccordionItem value="score">
-          <AccordionTrigger>Min. Entry Level Score</AccordionTrigger>
+          <AccordionTrigger>Min. nybörjarpoäng</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Input
                 type="number"
                 min="0"
-                max="1"
-                step="0.1"
-                placeholder="0.5"
+                max="10"
+                step="0.5"
+                placeholder="5"
                 value={filters.entrylevel_score_min || ""}
                 onChange={(e) =>
                   updateFilter("entrylevel_score_min", e.target.value ? Number(e.target.value) : undefined)
                 }
               />
-              <p className="text-muted-foreground text-xs">Score between 0 and 1 (higher is better)</p>
+              <p className="text-muted-foreground text-xs">Poäng mellan 0 och 10 (högre är bättre)</p>
             </div>
           </AccordionContent>
         </AccordionItem>
 
         {/* Max Experience Required */}
         <AccordionItem value="exp_years">
-          <AccordionTrigger>Max. Years Experience</AccordionTrigger>
+          <AccordionTrigger>Max antal års erfarenhet</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
               <Input
@@ -257,7 +257,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
 
         {/* Additional Filters */}
         <AccordionItem value="additional">
-          <AccordionTrigger>Additional Filters</AccordionTrigger>
+          <AccordionTrigger>Ytterligare filter</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
@@ -269,7 +269,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                   }
                 />
                 <Label htmlFor="education_replaces" className="cursor-pointer text-sm font-normal">
-                  Education can replace experience
+                  Utbildning kan ersätta erfarenhet
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -281,7 +281,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                   }
                 />
                 <Label htmlFor="no_assessment" className="cursor-pointer text-sm font-normal">
-                  No assessment required
+                  Ingen bedömning krävs
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
@@ -293,7 +293,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                   }
                 />
                 <Label htmlFor="no_license" className="cursor-pointer text-sm font-normal">
-                  No driver's license required
+                  Inget körkort krävs
                 </Label>
               </div>
             </div>
