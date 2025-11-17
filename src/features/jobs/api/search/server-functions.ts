@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getJobsIndex } from "../../utils/meilisearch";
 import type { SearchParams, SearchResponse } from "../../types/search";
 
-const PER_PAGE = 5;
+const PER_PAGE = 8;
 
 export const $searchJobs = createServerFn({ method: "GET" })
   .validator((data: SearchParams) => data)
@@ -69,15 +69,41 @@ export const $searchJobs = createServerFn({ method: "GET" })
       filters.push(`requires_drivers_license = false`);
     }
 
-    // AI tags filter (array contains)
+    // AI tags filter (array contains - OR logic for multiple tags)
     if (params.ai_tags) {
-      filters.push(`ai_tags = "${params.ai_tags}"`);
+      const tags = params.ai_tags.split(",").map((tag) => tag.trim());
+      if (tags.length === 1) {
+        filters.push(`ai_tags = "${tags[0]}"`);
+      } else if (tags.length > 1) {
+        const tagFilters = tags.map((tag) => `ai_tags = "${tag}"`).join(" OR ");
+        filters.push(`(${tagFilters})`);
+      }
     }
 
     // Determine sort order
-    const sort: string[] = params.q
-      ? [] // Let Meilisearch handle relevance ranking when there's a query
-      : ["published_at:desc"]; // Default: newest first
+    let sort: string[] = [];
+
+    if (params.sort) {
+      switch (params.sort) {
+        case "newest":
+          sort = ["published_at:desc"];
+          break;
+        case "score":
+          sort = ["entrylevel_score:desc"];
+          break;
+        case "salary":
+          sort = ["average_salary:desc"];
+          break;
+        case "relevance":
+        default:
+          // Use default relevance ranking (no explicit sort)
+          sort = [];
+          break;
+      }
+    } else {
+      // Default behavior: relevance if query, newest otherwise
+      sort = params.q ? [] : ["published_at:desc"];
+    }
 
     // Perform search
     const index = getJobsIndex();

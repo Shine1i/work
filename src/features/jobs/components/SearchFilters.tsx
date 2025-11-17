@@ -1,5 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
-import { SlidersHorizontal, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { SlidersHorizontal, X, Check, ChevronsUpDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   Accordion,
@@ -7,10 +8,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "~/components/ui/accordion";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "~/components/ui/command";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -18,6 +33,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { cn } from "~/utils";
+import { allAiTagsQueryOptions } from "../api/tags/queries";
 import type { SearchParams } from "../types/search";
 
 interface SearchFiltersProps {
@@ -43,10 +60,25 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
     no_drivers_license: initialParams.no_drivers_license,
   });
 
+  // Tags state
+  const [tags, setTags] = useState<string[]>(
+    initialParams.ai_tags ? initialParams.ai_tags.split(",") : [],
+  );
+  const [tagPopoverOpen, setTagPopoverOpen] = useState(false);
+  const [tagSearchValue, setTagSearchValue] = useState("");
+
+  // Fetch all available AI tags
+  const { data: availableTags = [] } = useQuery(allAiTagsQueryOptions());
+
   // Update parent when filters change
   useEffect(() => {
     onFiltersChange(filters);
   }, [filters, onFiltersChange]);
+
+  // Update ai_tags filter when tags change
+  useEffect(() => {
+    updateFilter("ai_tags", tags.length > 0 ? tags.join(",") : undefined);
+  }, [tags]);
 
   const updateFilter = (key: keyof SearchParams, value: string | number | boolean | undefined) => {
     // Convert "any" to undefined to remove filter
@@ -66,7 +98,24 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
     });
   };
 
-  const hasActiveFilters = Object.values(filters).some((value) => value !== undefined);
+  const handleSelectTag = (selectedTag: string) => {
+    if (!tags.includes(selectedTag)) {
+      setTags([...tags, selectedTag]);
+    }
+    setTagPopoverOpen(false);
+    setTagSearchValue("");
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
+
+  // Filter available tags based on search and already selected tags
+  const filteredTags = availableTags
+    .filter((tag) => !tags.includes(tag))
+    .filter((tag) => tag.toLowerCase().includes(tagSearchValue.toLowerCase()));
+
+  const hasActiveFilters = Object.values(filters).some((value) => value !== undefined) || tags.length > 0;
 
   return (
     <div className="flex flex-col gap-4">
@@ -251,6 +300,69 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                   updateFilter("experience_years_max", e.target.value ? Number(e.target.value) : undefined)
                 }
               />
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        {/* Keywords (AI Tags) */}
+        <AccordionItem value="keywords">
+          <AccordionTrigger>Nyckelord</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-3">
+              <Popover open={tagPopoverOpen} onOpenChange={setTagPopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={tagPopoverOpen}
+                    className="w-full justify-between"
+                  >
+                    Välj nyckelord...
+                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput
+                      placeholder="Sök nyckelord..."
+                      value={tagSearchValue}
+                      onValueChange={setTagSearchValue}
+                    />
+                    <CommandList>
+                      <CommandEmpty>Inga nyckelord hittades.</CommandEmpty>
+                      <CommandGroup>
+                        {filteredTags.slice(0, 50).map((tag) => (
+                          <CommandItem key={tag} value={tag} onSelect={handleSelectTag}>
+                            <Check
+                              className={cn(
+                                "mr-2 size-4",
+                                tags.includes(tag) ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {tag}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Badge key={tag} variant="secondary" className="gap-1">
+                      {tag}
+                      <button
+                        onClick={() => handleRemoveTag(tag)}
+                        className="hover:bg-destructive/20 ml-1 rounded-full"
+                        aria-label={`Remove ${tag}`}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
             </div>
           </AccordionContent>
         </AccordionItem>

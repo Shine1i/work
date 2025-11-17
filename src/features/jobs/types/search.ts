@@ -32,6 +32,9 @@ export const searchParamsSchema = z.object({
   // Array filter
   ai_tags: z.string().optional(),
 
+  // Sorting
+  sort: z.enum(["relevance", "newest", "score", "salary"]).optional(),
+
   // Pagination
   page: z.number().int().positive().catch(1),
 });

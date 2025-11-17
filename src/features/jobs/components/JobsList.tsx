@@ -47,7 +47,7 @@ export function JobsList({ data }: JobsListProps) {
   return (
     <div className="flex flex-col gap-6">
       {/* Jobs Grid */}
-      <div className="grid gap-4 sm:grid-cols-1">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
         {jobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}

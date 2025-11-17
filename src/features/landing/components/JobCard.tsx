@@ -78,36 +78,36 @@ export function JobCard({ job }: JobCardProps) {
 
   return (
     <Card className="relative h-full">
-      <CardHeader className="pb-3">
-        <div className="flex items-start gap-3">
+      <CardHeader className="pb-2">
+        <div className="flex items-start gap-2">
             {job.companyLogoUrl ? (
               <img
                 src={job.companyLogoUrl}
                 alt={job.companyName || "Company"}
-                className="size-12 rounded-md object-contain"
+                className="size-10 rounded-md object-contain"
               />
             ) : (
-              <div className="bg-muted flex size-12 items-center justify-center rounded-md">
-                <Briefcase className="text-muted-foreground size-6" />
+              <div className="bg-muted flex size-10 items-center justify-center rounded-md">
+                <Briefcase className="text-muted-foreground size-5" />
               </div>
             )}
 
             <div className="min-w-0 flex-1">
-              <h3 className="line-clamp-2 font-semibold leading-tight">{job.title}</h3>
-              <p className="text-muted-foreground mt-1 text-sm">{job.companyName}</p>
+              <h3 className="line-clamp-2 text-sm font-semibold leading-tight">{job.title}</h3>
+              <p className="text-muted-foreground mt-0.5 text-xs">{job.companyName}</p>
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-3 pt-0">
+        <CardContent className="space-y-2 pt-0">
           {job.locationText && (
-            <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
-              <MapPin className="size-4" />
+            <div className="text-muted-foreground flex items-center gap-1 text-xs">
+              <MapPin className="size-3" />
               <span className="line-clamp-1">{job.locationText}</span>
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2">{badges.slice(0, 4)}</div>
+          <div className="flex flex-wrap gap-1.5">{badges.slice(0, 3)}</div>
 
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground text-xs" suppressHydrationWarning>
@@ -117,7 +117,7 @@ export function JobCard({ job }: JobCardProps) {
 
           <div className="flex gap-2">
             <JobAnalysisPopover job={job} />
-            <Button asChild size="sm" className="flex-1">
+            <Button asChild size="sm" className="h-8 flex-1 text-xs">
               <a href={job.applicationUrl || "#"} target="_blank" rel="noopener noreferrer">
                 Ansök
               </a>

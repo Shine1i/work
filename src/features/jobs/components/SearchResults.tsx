@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal } from "lucide-react";
 import { useState, useCallback } from "react";
 import { Button } from "~/components/ui/button";
@@ -27,6 +28,7 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ data, params }: SearchResultsProps) {
+  const navigate = useNavigate();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentFilters, setCurrentFilters] = useState<Partial<SearchParams>>({});
 
@@ -34,6 +36,18 @@ export function SearchResults({ data, params }: SearchResultsProps) {
   const handleFiltersChange = useCallback((filters: Partial<SearchParams>) => {
     setCurrentFilters(filters);
   }, []);
+
+  // Handle sort change
+  const handleSortChange = (value: string) => {
+    navigate({
+      to: "/jobs/search",
+      search: {
+        ...params,
+        sort: value === "relevance" ? undefined : (value as "newest" | "score" | "salary"),
+        page: 1, // Reset to first page when sorting changes
+      },
+    });
+  };
 
   return (
     <div className="container  mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -89,15 +103,16 @@ export function SearchResults({ data, params }: SearchResultsProps) {
               </p>
             </div>
 
-            {/* Sort Dropdown - Placeholder for future */}
-            <Select defaultValue="newest">
+            {/* Sort Dropdown */}
+            <Select value={params.sort || "relevance"} onValueChange={handleSortChange}>
               <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="relevance">Relevance</SelectItem>
-                <SelectItem value="score">Entry Level Score</SelectItem>
+                <SelectItem value="relevance">Relevans</SelectItem>
+                <SelectItem value="newest">Nyast först</SelectItem>
+                <SelectItem value="score">Högsta poäng</SelectItem>
+                <SelectItem value="salary">Högsta lön</SelectItem>
               </SelectContent>
             </Select>
           </div>
