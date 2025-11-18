@@ -30,11 +30,15 @@ export const Route = createFileRoute("/api/embeddings/$")({
 					}
 
 					// Sanitize input to remove malformed Unicode surrogates (emojis that break llama.cpp JSON parser)
+					// and collapse excessive whitespace (fix embeddinggemma 164x slowdown bug #12508)
 					// Handle null/undefined/non-string values robustly
 					const sanitize = (text: any): string => {
 						if (text == null) return "";
 						const str = String(text);
-						return str.replace(/[\uD800-\uDFFF]/g, "");
+						// Remove Unicode surrogates (emojis)
+						const noSurrogates = str.replace(/[\uD800-\uDFFF]/g, "");
+						// Collapse excessive whitespace (double/triple spaces from HTML/PDFs)
+						return noSurrogates.replace(/\s+/g, " ").trim();
 					};
 
 					const sanitizedInputs = Array.isArray(inputs)
