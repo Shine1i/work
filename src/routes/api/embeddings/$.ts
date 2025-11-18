@@ -1,7 +1,7 @@
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { env } from "~/config/env/server";
 
-export const ServerRoute = createServerFileRoute("/api/embeddings/$" ).methods({
+export const Route = createServerFileRoute("/api/embeddings/$" ).methods({
 	POST: async ({ request }) => {
 		try {
 			// Parse incoming request from Meilisearch
