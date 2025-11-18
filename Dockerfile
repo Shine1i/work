@@ -1,5 +1,5 @@
-# Use official Node.js LTS image
-FROM node:20-alpine AS base
+# Use official Node.js 22 image
+FROM node:22-alpine AS base
 WORKDIR /usr/src/app
 
 # Install dependencies
