@@ -1,5 +1,5 @@
 import { createMiddleware } from "@tanstack/react-start";
-import { getWebRequest, setResponseStatus } from "@tanstack/react-start/server";
+import { getRequest } from "@tanstack/react-start/server";
 import { auth } from "~/lib/auth/auth";
 
 // https://tanstack.com/start/latest/docs/framework/react/middleware
@@ -10,8 +10,9 @@ import { auth } from "~/lib/auth/auth";
  */
 export const authMiddleware = createMiddleware({ type: "function" }).server(
   async ({ next }) => {
+    const request = getRequest();
     const session = await auth.api.getSession({
-      headers: getWebRequest().headers,
+      headers: request.headers,
       query: {
         // ensure session is fresh
         // https://www.better-auth.com/docs/concepts/session-management#session-caching
@@ -20,8 +21,7 @@ export const authMiddleware = createMiddleware({ type: "function" }).server(
     });
 
     if (!session) {
-      setResponseStatus(401);
-      throw new Error("Unauthorized");
+      throw new Response("Unauthorized", { status: 401 });
     }
 
     return next({ context: { user: session.user } });
