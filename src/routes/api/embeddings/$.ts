@@ -10,10 +10,23 @@ export const Route = createFileRoute("/api/embeddings/$")({
 					const body = await request.json();
 					const inputs = body.input;
 
+					if (!inputs) {
+						return new Response(
+							JSON.stringify({ error: "Missing input field" }),
+							{
+								status: 400,
+								headers: { "Content-Type": "application/json" },
+							},
+						);
+					}
+
 					// Sanitize input to remove malformed Unicode surrogates (emojis that break llama.cpp JSON parser)
-					// Replace unpaired surrogates with empty string
-					const sanitize = (text: string) =>
-						text.replace(/[\uD800-\uDFFF]/g, "");
+					// Handle null/undefined/non-string values robustly
+					const sanitize = (text: any): string => {
+						if (text == null) return "";
+						const str = String(text);
+						return str.replace(/[\uD800-\uDFFF]/g, "");
+					};
 
 					const sanitizedInputs = Array.isArray(inputs)
 						? inputs.map(sanitize)
@@ -64,7 +77,27 @@ export const Route = createFileRoute("/api/embeddings/$")({
 					// OpenAI format: { data: [{ embedding: [...] }, ...] }
 					// Meilisearch expects: [...] for single or [[...], [...]] for batch
 					const data = await llamaResponse.json();
-					const embeddings = data.data.map((item: any) => item.embedding);
+
+					if (!data.data || !Array.isArray(data.data)) {
+						console.error("Invalid llama.cpp response format:", data);
+						return new Response(
+							JSON.stringify({
+								error: "Invalid response format from embedding server",
+								details: "Missing or invalid 'data' array",
+							}),
+							{
+								status: 500,
+								headers: { "Content-Type": "application/json" },
+							},
+						);
+					}
+
+					const embeddings = data.data.map((item: any) => {
+						if (!item.embedding || !Array.isArray(item.embedding)) {
+							throw new Error("Invalid embedding in response");
+						}
+						return item.embedding;
+					});
 
 					// Return single embedding or array of embeddings
 					const response = Array.isArray(inputs) ? embeddings : embeddings[0];
