@@ -1,41 +1,34 @@
-# use the official Bun image
-# see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1 AS base
+# Use official Node.js LTS image
+FROM node:20-alpine AS base
 WORKDIR /usr/src/app
 
-# install dependencies into temp directory
-# this will cache them and speed up future builds
+# Install dependencies
 FROM base AS install
 RUN mkdir -p /temp/dev
-COPY package.json bun.lock /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile --ignore-scripts
+COPY package.json package-lock.json* /temp/dev/
+RUN cd /temp/dev && npm ci
 
-# install with --production (exclude devDependencies)
+# Install production dependencies only
 RUN mkdir -p /temp/prod
-COPY package.json bun.lock /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production --ignore-scripts
+COPY package.json package-lock.json* /temp/prod/
+RUN cd /temp/prod && npm ci --omit=dev
 
-
-# copy node_modules from temp directory
-# then copy all (non-ignored) project files into the image
+# Build application
 FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
-# [optional] tests & build
 ENV NODE_ENV=production
-# RUN bun test  # Uncomment if you have tests
-# Pre-generate route tree to avoid race conditions
+# Pre-generate route tree
+RUN npx @tanstack/router-cli generate
+RUN npm run build
 
-RUN bun run build
-
-# copy production dependencies and source code into final image
+# Production image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/.output .output
 COPY --from=prerelease /usr/src/app/package.json .
 
-# run the app
-USER bun
+USER node
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "start" ]
+CMD ["node", ".output/server/index.mjs"]
