@@ -112,6 +112,13 @@ export const $searchJobs = createServerFn({ method: "GET" })
       sort,
       page,
       hitsPerPage: PER_PAGE,
+      // Enable hybrid search if semanticRatio is provided
+      ...(params.semanticRatio !== undefined && {
+        hybrid: {
+          semanticRatio: params.semanticRatio,
+          embedder: "job-embedder",
+        },
+      }),
     });
 
     // Map response to match existing SearchResponse type

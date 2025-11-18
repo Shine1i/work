@@ -21,6 +21,7 @@ import {
 } from "~/components/ui/command";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Slider } from "~/components/ui/slider";
 import {
   Popover,
   PopoverContent,
@@ -58,6 +59,7 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
     education_replaces_experience: initialParams.education_replaces_experience,
     no_assessment: initialParams.no_assessment,
     no_drivers_license: initialParams.no_drivers_license,
+    semanticRatio: initialParams.semanticRatio,
   });
 
   // Tags state
@@ -408,6 +410,48 @@ export function SearchFilters({ initialParams, onFiltersChange }: SearchFiltersP
                   Inget körkort krävs
                 </Label>
               </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        {/* Hybrid Search Mode */}
+        <AccordionItem value="hybrid">
+          <AccordionTrigger>Sökmiljö (AI)</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="semantic_ratio" className="text-sm">
+                    Semantisk sökning
+                  </Label>
+                  <span className="text-muted-foreground text-xs font-medium">
+                    {filters.semanticRatio !== undefined
+                      ? `${Math.round(filters.semanticRatio * 100)}%`
+                      : "Av"}
+                  </span>
+                </div>
+                <Slider
+                  id="semantic_ratio"
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  value={[filters.semanticRatio ?? 0.5]}
+                  onValueChange={(value) => {
+                    // Only set if value is not default (0.5 with no query means keyword search)
+                    const ratio = value[0];
+                    updateFilter("semanticRatio", ratio > 0 ? ratio : undefined);
+                  }}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>Nyckelord</span>
+                  <span>AI-förståelse</span>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-xs">
+                Justera balansen mellan exakt nyckelordsmatchning (vänster) och AI-driven semantisk sökning (höger).
+                Semantisk sökning förstår mening och kontext.
+              </p>
             </div>
           </AccordionContent>
         </AccordionItem>

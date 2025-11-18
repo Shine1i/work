@@ -6,6 +6,10 @@ import { defineConfig } from "vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  server: {
+    host: true,
+    allowedHosts: [".ngrok-free.dev", ".ngrok.io"],
+  },
   plugins: [
     devtools(),
     tsConfigPaths({

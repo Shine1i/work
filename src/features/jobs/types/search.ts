@@ -35,6 +35,9 @@ export const searchParamsSchema = z.object({
   // Sorting
   sort: z.enum(["relevance", "newest", "score", "salary"]).optional(),
 
+  // Hybrid search
+  semanticRatio: z.number().min(0).max(1).optional(),
+
   // Pagination
   page: z.number().int().positive().catch(1),
 });
