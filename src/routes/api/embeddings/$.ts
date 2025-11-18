@@ -1,74 +1,78 @@
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { env } from "~/config/env/server";
 
-export const Route = createServerFileRoute("/api/embeddings/$" ).methods({
-	POST: async ({ request }) => {
-		try {
-			// Parse incoming request from Meilisearch
-			const body = await request.json();
-			const inputs = body.input;
+export const Route = createFileRoute("/api/embeddings/$")({
+	server: {
+		handlers: {
+			POST: async ({ request }) => {
+				try {
+					// Parse incoming request from Meilisearch
+					const body = await request.json();
+					const inputs = body.input;
 
-			// Wrap with EmbeddingGemma query prompt format
-			// Document embeddings use: "title: X | text: Y" (from documentTemplate)
-			// Query embeddings use: "task: search result | query: Z"
-			const promptedInputs = Array.isArray(inputs)
-				? inputs.map((text: string) => `task: search result | query: ${text}`)
-				: `task: search result | query: ${inputs}`;
+					// Wrap with EmbeddingGemma query prompt format
+					// Document embeddings use: "title: X | text: Y" (from documentTemplate)
+					// Query embeddings use: "task: search result | query: Z"
+					const promptedInputs = Array.isArray(inputs)
+						? inputs.map((text: string) => `task: search result | query: ${text}`)
+						: `task: search result | query: ${inputs}`;
 
-			// Forward to llama.cpp server
-			const llamaResponse = await fetch(
-				`${env.LLAMA_CPP_URL}/v1/embeddings`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						...(env.LLAMA_CPP_API_KEY && {
-							Authorization: `Bearer ${env.LLAMA_CPP_API_KEY}`,
+					// Forward to llama.cpp server
+					const llamaResponse = await fetch(
+						`${env.LLAMA_CPP_URL}/v1/embeddings`,
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+								...(env.LLAMA_CPP_API_KEY && {
+									Authorization: `Bearer ${env.LLAMA_CPP_API_KEY}`,
+								}),
+							},
+							body: JSON.stringify({
+								...body,
+								input: promptedInputs,
+							}),
+						},
+					)
+
+					if (!llamaResponse.ok) {
+						console.error(
+							`llama.cpp embeddings failed: ${llamaResponse.status} ${llamaResponse.statusText}`,
+						)
+						return new Response(
+							JSON.stringify({
+								error: "Embeddings generation failed",
+								details: await llamaResponse.text(),
+							}),
+							{
+								status: llamaResponse.status,
+								headers: { "Content-Type": "application/json" },
+							},
+						)
+					}
+
+					// Return llama.cpp response to Meilisearch
+					const data = await llamaResponse.json();
+					return new Response(JSON.stringify(data), {
+						status: 200,
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+				} catch (error) {
+					console.error("Embeddings proxy error:", error);
+					return new Response(
+						JSON.stringify({
+							error: "Embeddings proxy failed",
+							message: error instanceof Error ? error.message : "Unknown error",
 						}),
-					},
-					body: JSON.stringify({
-						...body,
-						input: promptedInputs,
-					}),
-				},
-			);
-
-			if (!llamaResponse.ok) {
-				console.error(
-					`llama.cpp embeddings failed: ${llamaResponse.status} ${llamaResponse.statusText}`,
-				);
-				return new Response(
-					JSON.stringify({
-						error: "Embeddings generation failed",
-						details: await llamaResponse.text(),
-					}),
-					{
-						status: llamaResponse.status,
-						headers: { "Content-Type": "application/json" },
-					},
-				);
-			}
-
-			// Return llama.cpp response to Meilisearch
-			const data = await llamaResponse.json();
-			return new Response(JSON.stringify(data), {
-				status: 200,
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
-		} catch (error) {
-			console.error("Embeddings proxy error:", error);
-			return new Response(
-				JSON.stringify({
-					error: "Embeddings proxy failed",
-					message: error instanceof Error ? error.message : "Unknown error",
-				}),
-				{
-					status: 500,
-					headers: { "Content-Type": "application/json" },
-				},
-			);
-		}
+						{
+							status: 500,
+							headers: { "Content-Type": "application/json" },
+						},
+					)
+				}
+			},
+		},
 	},
 });

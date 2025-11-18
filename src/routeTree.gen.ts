@@ -8,287 +8,276 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from "@tanstack/react-start/server";
-
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as authenticatedRouteRouteImport } from "./routes/(authenticated)/route";
-import { Route as authPagesRouteRouteImport } from "./routes/(auth-pages)/route";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as JobsSearchRouteImport } from "./routes/jobs/search";
-import { Route as authPagesSignupRouteImport } from "./routes/(auth-pages)/signup";
-import { Route as authPagesLoginRouteImport } from "./routes/(auth-pages)/login";
-import { Route as authenticatedDashboardRouteRouteImport } from "./routes/(authenticated)/dashboard/route";
-import { Route as authenticatedDashboardIndexRouteImport } from "./routes/(authenticated)/dashboard/index";
-import { ServerRoute as ApiEmbeddingsSplatServerRouteImport } from "./routes/api/embeddings/$";
-import { ServerRoute as ApiAuthSplatServerRouteImport } from "./routes/api/auth/$";
-
-const rootServerRouteImport = createServerRootRoute();
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as authenticatedRouteRouteImport } from './routes/(authenticated)/route'
+import { Route as authPagesRouteRouteImport } from './routes/(auth-pages)/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as JobsSearchRouteImport } from './routes/jobs/search'
+import { Route as authPagesSignupRouteImport } from './routes/(auth-pages)/signup'
+import { Route as authPagesLoginRouteImport } from './routes/(auth-pages)/login'
+import { Route as authenticatedDashboardRouteRouteImport } from './routes/(authenticated)/dashboard/route'
+import { Route as authenticatedDashboardIndexRouteImport } from './routes/(authenticated)/dashboard/index'
+import { Route as ApiEmbeddingsSplatRouteImport } from './routes/api/embeddings/$'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const authenticatedRouteRoute = authenticatedRouteRouteImport.update({
-  id: "/(authenticated)",
+  id: '/(authenticated)',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const authPagesRouteRoute = authPagesRouteRouteImport.update({
-  id: "/(auth-pages)",
+  id: '/(auth-pages)',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const JobsSearchRoute = JobsSearchRouteImport.update({
-  id: "/jobs/search",
-  path: "/jobs/search",
+  id: '/jobs/search',
+  path: '/jobs/search',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const authPagesSignupRoute = authPagesSignupRouteImport.update({
-  id: "/signup",
-  path: "/signup",
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => authPagesRouteRoute,
-} as any);
+} as any)
 const authPagesLoginRoute = authPagesLoginRouteImport.update({
-  id: "/login",
-  path: "/login",
+  id: '/login',
+  path: '/login',
   getParentRoute: () => authPagesRouteRoute,
-} as any);
+} as any)
 const authenticatedDashboardRouteRoute =
   authenticatedDashboardRouteRouteImport.update({
-    id: "/dashboard",
-    path: "/dashboard",
+    id: '/dashboard',
+    path: '/dashboard',
     getParentRoute: () => authenticatedRouteRoute,
-  } as any);
+  } as any)
 const authenticatedDashboardIndexRoute =
   authenticatedDashboardIndexRouteImport.update({
-    id: "/",
-    path: "/",
+    id: '/',
+    path: '/',
     getParentRoute: () => authenticatedDashboardRouteRoute,
-  } as any);
-const ApiEmbeddingsSplatServerRoute =
-  ApiEmbeddingsSplatServerRouteImport.update({
-    id: "/api/embeddings/$",
-    path: "/api/embeddings/$",
-    getParentRoute: () => rootServerRouteImport,
-  } as any);
-const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
-  id: "/api/auth/$",
-  path: "/api/auth/$",
-  getParentRoute: () => rootServerRouteImport,
-} as any);
+  } as any)
+const ApiEmbeddingsSplatRoute = ApiEmbeddingsSplatRouteImport.update({
+  id: '/api/embeddings/$',
+  path: '/api/embeddings/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof authenticatedRouteRouteWithChildren;
-  "/dashboard": typeof authenticatedDashboardRouteRouteWithChildren;
-  "/login": typeof authPagesLoginRoute;
-  "/signup": typeof authPagesSignupRoute;
-  "/jobs/search": typeof JobsSearchRoute;
-  "/dashboard/": typeof authenticatedDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/dashboard': typeof authenticatedDashboardRouteRouteWithChildren
+  '/login': typeof authPagesLoginRoute
+  '/signup': typeof authPagesSignupRoute
+  '/jobs/search': typeof JobsSearchRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/embeddings/$': typeof ApiEmbeddingsSplatRoute
+  '/dashboard/': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof authenticatedRouteRouteWithChildren;
-  "/login": typeof authPagesLoginRoute;
-  "/signup": typeof authPagesSignupRoute;
-  "/jobs/search": typeof JobsSearchRoute;
-  "/dashboard": typeof authenticatedDashboardIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof authPagesLoginRoute
+  '/signup': typeof authPagesSignupRoute
+  '/jobs/search': typeof JobsSearchRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/embeddings/$': typeof ApiEmbeddingsSplatRoute
+  '/dashboard': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/(auth-pages)": typeof authPagesRouteRouteWithChildren;
-  "/(authenticated)": typeof authenticatedRouteRouteWithChildren;
-  "/(authenticated)/dashboard": typeof authenticatedDashboardRouteRouteWithChildren;
-  "/(auth-pages)/login": typeof authPagesLoginRoute;
-  "/(auth-pages)/signup": typeof authPagesSignupRoute;
-  "/jobs/search": typeof JobsSearchRoute;
-  "/(authenticated)/dashboard/": typeof authenticatedDashboardIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/(auth-pages)': typeof authPagesRouteRouteWithChildren
+  '/(authenticated)': typeof authenticatedRouteRouteWithChildren
+  '/(authenticated)/dashboard': typeof authenticatedDashboardRouteRouteWithChildren
+  '/(auth-pages)/login': typeof authPagesLoginRoute
+  '/(auth-pages)/signup': typeof authPagesSignupRoute
+  '/jobs/search': typeof JobsSearchRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/embeddings/$': typeof ApiEmbeddingsSplatRoute
+  '/(authenticated)/dashboard/': typeof authenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/dashboard"
-    | "/login"
-    | "/signup"
-    | "/jobs/search"
-    | "/dashboard/";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/signup" | "/jobs/search" | "/dashboard";
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/jobs/search'
+    | '/api/auth/$'
+    | '/api/embeddings/$'
+    | '/dashboard/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/jobs/search'
+    | '/api/auth/$'
+    | '/api/embeddings/$'
+    | '/dashboard'
   id:
-    | "__root__"
-    | "/"
-    | "/(auth-pages)"
-    | "/(authenticated)"
-    | "/(authenticated)/dashboard"
-    | "/(auth-pages)/login"
-    | "/(auth-pages)/signup"
-    | "/jobs/search"
-    | "/(authenticated)/dashboard/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/(auth-pages)'
+    | '/(authenticated)'
+    | '/(authenticated)/dashboard'
+    | '/(auth-pages)/login'
+    | '/(auth-pages)/signup'
+    | '/jobs/search'
+    | '/api/auth/$'
+    | '/api/embeddings/$'
+    | '/(authenticated)/dashboard/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  authPagesRouteRoute: typeof authPagesRouteRouteWithChildren;
-  authenticatedRouteRoute: typeof authenticatedRouteRouteWithChildren;
-  JobsSearchRoute: typeof JobsSearchRoute;
-}
-export interface FileServerRoutesByFullPath {
-  "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/embeddings/$": typeof ApiEmbeddingsSplatServerRoute;
-}
-export interface FileServerRoutesByTo {
-  "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/embeddings/$": typeof ApiEmbeddingsSplatServerRoute;
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport;
-  "/api/auth/$": typeof ApiAuthSplatServerRoute;
-  "/api/embeddings/$": typeof ApiEmbeddingsSplatServerRoute;
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath;
-  fullPaths: "/api/auth/$" | "/api/embeddings/$";
-  fileServerRoutesByTo: FileServerRoutesByTo;
-  to: "/api/auth/$" | "/api/embeddings/$";
-  id: "__root__" | "/api/auth/$" | "/api/embeddings/$";
-  fileServerRoutesById: FileServerRoutesById;
-}
-export interface RootServerRouteChildren {
-  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute;
-  ApiEmbeddingsSplatServerRoute: typeof ApiEmbeddingsSplatServerRoute;
+  IndexRoute: typeof IndexRoute
+  authPagesRouteRoute: typeof authPagesRouteRouteWithChildren
+  authenticatedRouteRoute: typeof authenticatedRouteRouteWithChildren
+  JobsSearchRoute: typeof JobsSearchRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiEmbeddingsSplatRoute: typeof ApiEmbeddingsSplatRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/(authenticated)": {
-      id: "/(authenticated)";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof authenticatedRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/(auth-pages)": {
-      id: "/(auth-pages)";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof authPagesRouteRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/jobs/search": {
-      id: "/jobs/search";
-      path: "/jobs/search";
-      fullPath: "/jobs/search";
-      preLoaderRoute: typeof JobsSearchRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/(auth-pages)/signup": {
-      id: "/(auth-pages)/signup";
-      path: "/signup";
-      fullPath: "/signup";
-      preLoaderRoute: typeof authPagesSignupRouteImport;
-      parentRoute: typeof authPagesRouteRoute;
-    };
-    "/(auth-pages)/login": {
-      id: "/(auth-pages)/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof authPagesLoginRouteImport;
-      parentRoute: typeof authPagesRouteRoute;
-    };
-    "/(authenticated)/dashboard": {
-      id: "/(authenticated)/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof authenticatedDashboardRouteRouteImport;
-      parentRoute: typeof authenticatedRouteRoute;
-    };
-    "/(authenticated)/dashboard/": {
-      id: "/(authenticated)/dashboard/";
-      path: "/";
-      fullPath: "/dashboard/";
-      preLoaderRoute: typeof authenticatedDashboardIndexRouteImport;
-      parentRoute: typeof authenticatedDashboardRouteRoute;
-    };
-  }
-}
-declare module "@tanstack/react-start/server" {
-  interface ServerFileRoutesByPath {
-    "/api/embeddings/$": {
-      id: "/api/embeddings/$";
-      path: "/api/embeddings/$";
-      fullPath: "/api/embeddings/$";
-      preLoaderRoute: typeof ApiEmbeddingsSplatServerRouteImport;
-      parentRoute: typeof rootServerRouteImport;
-    };
-    "/api/auth/$": {
-      id: "/api/auth/$";
-      path: "/api/auth/$";
-      fullPath: "/api/auth/$";
-      preLoaderRoute: typeof ApiAuthSplatServerRouteImport;
-      parentRoute: typeof rootServerRouteImport;
-    };
+    '/(authenticated)': {
+      id: '/(authenticated)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth-pages)': {
+      id: '/(auth-pages)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authPagesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs/search': {
+      id: '/jobs/search'
+      path: '/jobs/search'
+      fullPath: '/jobs/search'
+      preLoaderRoute: typeof JobsSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth-pages)/signup': {
+      id: '/(auth-pages)/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof authPagesSignupRouteImport
+      parentRoute: typeof authPagesRouteRoute
+    }
+    '/(auth-pages)/login': {
+      id: '/(auth-pages)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authPagesLoginRouteImport
+      parentRoute: typeof authPagesRouteRoute
+    }
+    '/(authenticated)/dashboard': {
+      id: '/(authenticated)/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof authenticatedDashboardRouteRouteImport
+      parentRoute: typeof authenticatedRouteRoute
+    }
+    '/(authenticated)/dashboard/': {
+      id: '/(authenticated)/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof authenticatedDashboardIndexRouteImport
+      parentRoute: typeof authenticatedDashboardRouteRoute
+    }
+    '/api/embeddings/$': {
+      id: '/api/embeddings/$'
+      path: '/api/embeddings/$'
+      fullPath: '/api/embeddings/$'
+      preLoaderRoute: typeof ApiEmbeddingsSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface authPagesRouteRouteChildren {
-  authPagesLoginRoute: typeof authPagesLoginRoute;
-  authPagesSignupRoute: typeof authPagesSignupRoute;
+  authPagesLoginRoute: typeof authPagesLoginRoute
+  authPagesSignupRoute: typeof authPagesSignupRoute
 }
 
 const authPagesRouteRouteChildren: authPagesRouteRouteChildren = {
   authPagesLoginRoute: authPagesLoginRoute,
   authPagesSignupRoute: authPagesSignupRoute,
-};
+}
 
 const authPagesRouteRouteWithChildren = authPagesRouteRoute._addFileChildren(
   authPagesRouteRouteChildren,
-);
+)
 
 interface authenticatedDashboardRouteRouteChildren {
-  authenticatedDashboardIndexRoute: typeof authenticatedDashboardIndexRoute;
+  authenticatedDashboardIndexRoute: typeof authenticatedDashboardIndexRoute
 }
 
 const authenticatedDashboardRouteRouteChildren: authenticatedDashboardRouteRouteChildren =
   {
     authenticatedDashboardIndexRoute: authenticatedDashboardIndexRoute,
-  };
+  }
 
 const authenticatedDashboardRouteRouteWithChildren =
   authenticatedDashboardRouteRoute._addFileChildren(
     authenticatedDashboardRouteRouteChildren,
-  );
+  )
 
 interface authenticatedRouteRouteChildren {
-  authenticatedDashboardRouteRoute: typeof authenticatedDashboardRouteRouteWithChildren;
+  authenticatedDashboardRouteRoute: typeof authenticatedDashboardRouteRouteWithChildren
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
   authenticatedDashboardRouteRoute:
     authenticatedDashboardRouteRouteWithChildren,
-};
+}
 
 const authenticatedRouteRouteWithChildren =
-  authenticatedRouteRoute._addFileChildren(authenticatedRouteRouteChildren);
+  authenticatedRouteRoute._addFileChildren(authenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authPagesRouteRoute: authPagesRouteRouteWithChildren,
   authenticatedRouteRoute: authenticatedRouteRouteWithChildren,
   JobsSearchRoute: JobsSearchRoute,
-};
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiEmbeddingsSplatRoute: ApiEmbeddingsSplatRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
-  ApiEmbeddingsSplatServerRoute: ApiEmbeddingsSplatServerRoute,
-};
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

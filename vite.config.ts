@@ -22,6 +22,7 @@ export default defineConfig({
       tsr: {
         quoteStyle: "double",
         semicolons: true,
+        exclude: ["**/api/**"],
       },
 
       // https://tanstack.com/start/latest/docs/framework/react/hosting#deployment
