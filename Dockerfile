@@ -16,6 +16,9 @@ RUN bun install --frozen-lockfile --ignore-scripts
 # Copy source code
 COPY . .
 
+# Pre-generate route tree to avoid race conditions
+RUN bun x @tanstack/router-cli generate
+
 # Build application
 RUN bun run build
 
