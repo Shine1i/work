@@ -48,34 +48,49 @@ export const Route = createFileRoute("/api/embeddings/$")({
 						? sanitizedInputs.map((text: string) => `task: search result | query: ${text}`)
 						: `task: search result | query: ${sanitizedInputs}`;
 
-					// Forward to llama.cpp server
-					const llamaResponse = await fetch(
-						`${env.LLAMA_CPP_URL}/v1/embeddings`,
-						{
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-								...(env.LLAMA_CPP_API_KEY && {
-									Authorization: `Bearer ${env.LLAMA_CPP_API_KEY}`,
+					// Forward to llama.cpp server with timeout
+					const controller = new AbortController();
+					const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
+					let llamaResponse: Response;
+					try {
+						llamaResponse = await fetch(
+							`${env.LLAMA_CPP_URL}/v1/embeddings`,
+							{
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json",
+									...(env.LLAMA_CPP_API_KEY && {
+										Authorization: `Bearer ${env.LLAMA_CPP_API_KEY}`,
+									}),
+								},
+								body: JSON.stringify({
+									input: promptedInputs,
 								}),
+								signal: controller.signal,
 							},
-							body: JSON.stringify({
-								input: promptedInputs,
-							}),
-						},
-					);
+						);
+					} catch (fetchError) {
+						clearTimeout(timeout);
+						console.error("llama.cpp connection failed:", fetchError instanceof Error ? fetchError.message : "Unknown error");
+						return new Response(
+							JSON.stringify({ error: "Embeddings service unavailable" }),
+							{
+								status: 503,
+								headers: { "Content-Type": "application/json" },
+							},
+						);
+					} finally {
+						clearTimeout(timeout);
+					}
 
 					if (!llamaResponse.ok) {
-						console.error(
-							`llama.cpp embeddings failed: ${llamaResponse.status} ${llamaResponse.statusText}`,
-						);
+						const status = llamaResponse.status;
+						console.error(`llama.cpp embeddings failed: ${status}`);
 						return new Response(
-							JSON.stringify({
-								error: "Embeddings generation failed",
-								details: await llamaResponse.text(),
-							}),
+							JSON.stringify({ error: "Embeddings generation failed" }),
 							{
-								status: llamaResponse.status,
+								status: status >= 500 ? 503 : status,
 								headers: { "Content-Type": "application/json" },
 							},
 						);
@@ -117,17 +132,14 @@ export const Route = createFileRoute("/api/embeddings/$")({
 						},
 					});
 				} catch (error) {
-					console.error("Embeddings proxy error:", error);
+					console.error("Embeddings proxy error:", error instanceof Error ? error.message : String(error));
 					return new Response(
-						JSON.stringify({
-							error: "Embeddings proxy failed",
-							message: error instanceof Error ? error.message : "Unknown error",
-						}),
+						JSON.stringify({ error: "Embeddings proxy failed" }),
 						{
 							status: 500,
 							headers: { "Content-Type": "application/json" },
 						},
-					)
+					);
 				}
 			},
 		},
