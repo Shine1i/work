@@ -10,12 +10,21 @@ export const Route = createFileRoute("/api/embeddings/$")({
 					const body = await request.json();
 					const inputs = body.input;
 
+					// Sanitize input to remove malformed Unicode surrogates (emojis that break llama.cpp JSON parser)
+					// Replace unpaired surrogates with empty string
+					const sanitize = (text: string) =>
+						text.replace(/[\uD800-\uDFFF]/g, "");
+
+					const sanitizedInputs = Array.isArray(inputs)
+						? inputs.map(sanitize)
+						: sanitize(inputs);
+
 					// Wrap with EmbeddingGemma query prompt format
 					// Document embeddings use: "title: X | text: Y" (from documentTemplate)
 					// Query embeddings use: "task: search result | query: Z"
-					const promptedInputs = Array.isArray(inputs)
-						? inputs.map((text: string) => `task: search result | query: ${text}`)
-						: `task: search result | query: ${inputs}`;
+					const promptedInputs = Array.isArray(sanitizedInputs)
+						? sanitizedInputs.map((text: string) => `task: search result | query: ${text}`)
+						: `task: search result | query: ${sanitizedInputs}`;
 
 					// Forward to llama.cpp server
 					const llamaResponse = await fetch(
