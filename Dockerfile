@@ -26,7 +26,7 @@ COPY . .
 ENV NODE_ENV=production
 # RUN bun test  # Uncomment if you have tests
 # Pre-generate route tree to avoid race conditions
-RUN bun x @tanstack/router-cli generate
+
 RUN bun run build
 
 # copy production dependencies and source code into final image
