@@ -60,7 +60,6 @@ export const Route = createFileRoute("/api/embeddings/$")({
 								}),
 							},
 							body: JSON.stringify({
-								...body,
 								input: promptedInputs,
 							}),
 						},
