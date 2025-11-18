@@ -4,9 +4,37 @@ import type { SearchParams, SearchResponse } from "../../types/search";
 
 const PER_PAGE = 8;
 
-export const $searchJobs = createServerFn({ method: "GET" })
-  .validator((data: SearchParams) => data)
-  .handler(async ({ data: params }) => {
+export const $searchJobs = createServerFn({ method: "GET" }).handler(
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const searchParams = Object.fromEntries(url.searchParams);
+
+    // Convert query params to typed SearchParams
+    const params: SearchParams = {
+      q: searchParams.q,
+      page: searchParams.page ? Number(searchParams.page) : undefined,
+      location: searchParams.location,
+      company: searchParams.company,
+      employment_type: searchParams.employment_type,
+      experience_level: searchParams.experience_level,
+      location_flexibility: searchParams.location_flexibility,
+      application_process_type: searchParams.application_process_type,
+      salary_min: searchParams.salary_min ? Number(searchParams.salary_min) : undefined,
+      salary_max: searchParams.salary_max ? Number(searchParams.salary_max) : undefined,
+      entrylevel_score_min: searchParams.entrylevel_score_min
+        ? Number(searchParams.entrylevel_score_min)
+        : undefined,
+      experience_years_max: searchParams.experience_years_max
+        ? Number(searchParams.experience_years_max)
+        : undefined,
+      education_replaces_experience: searchParams.education_replaces_experience === "true",
+      no_assessment: searchParams.no_assessment === "true",
+      no_drivers_license: searchParams.no_drivers_license === "true",
+      ai_tags: searchParams.ai_tags,
+      sort: searchParams.sort,
+      semanticRatio: searchParams.semanticRatio ? Number(searchParams.semanticRatio) : undefined,
+    };
+
     const page = params.page || 1;
 
     // Build filter array for Meilisearch
@@ -157,4 +185,5 @@ export const $searchJobs = createServerFn({ method: "GET" })
     };
 
     return response;
-  });
+  },
+);

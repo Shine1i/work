@@ -3,6 +3,7 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { nitro } from "nitro/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -22,12 +23,9 @@ export default defineConfig({
       tsr: {
         quoteStyle: "double",
         semicolons: true,
-        exclude: ["**/api/**"],
       },
-
-      // https://tanstack.com/start/latest/docs/framework/react/hosting#deployment
-      // target: "node-server",
     }),
+    nitro(),
     viteReact({
       // https://react.dev/learn/react-compiler
       babel: {
@@ -43,4 +41,5 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
+  nitro: {},
 });

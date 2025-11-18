@@ -26,9 +26,9 @@ RUN npm run build
 # Production image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/dist dist
+COPY --from=prerelease /usr/src/app/.output .output
 COPY --from=prerelease /usr/src/app/package.json .
 
 USER node
 EXPOSE 3000/tcp
-CMD ["node", "dist/server/server.js"]
+CMD ["node", ".output/server/index.mjs"]
