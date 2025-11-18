@@ -33,12 +33,12 @@ export const Route = createFileRoute("/api/embeddings/$")({
 								input: promptedInputs,
 							}),
 						},
-					)
+					);
 
 					if (!llamaResponse.ok) {
 						console.error(
 							`llama.cpp embeddings failed: ${llamaResponse.status} ${llamaResponse.statusText}`,
-						)
+						);
 						return new Response(
 							JSON.stringify({
 								error: "Embeddings generation failed",
@@ -48,17 +48,24 @@ export const Route = createFileRoute("/api/embeddings/$")({
 								status: llamaResponse.status,
 								headers: { "Content-Type": "application/json" },
 							},
-						)
+						);
 					}
 
-					// Return llama.cpp response to Meilisearch
+					// Transform llama.cpp OpenAI format to Meilisearch format
+					// OpenAI format: { data: [{ embedding: [...] }, ...] }
+					// Meilisearch expects: [...] for single or [[...], [...]] for batch
 					const data = await llamaResponse.json();
-					return new Response(JSON.stringify(data), {
+					const embeddings = data.data.map((item: any) => item.embedding);
+
+					// Return single embedding or array of embeddings
+					const response = Array.isArray(inputs) ? embeddings : embeddings[0];
+
+					return new Response(JSON.stringify(response), {
 						status: 200,
 						headers: {
 							"Content-Type": "application/json",
 						},
-					})
+					});
 				} catch (error) {
 					console.error("Embeddings proxy error:", error);
 					return new Response(
