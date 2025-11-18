@@ -8,9 +8,18 @@ export const Route = createFileRoute("/api/embeddings/$")({
 				try {
 					// Parse incoming request from Meilisearch
 					const body = await request.json();
-					const inputs = body.input;
 
-					if (!inputs) {
+					// Handle both formats:
+					// 1. {"input": "text"} or {"input": ["text1", "text2"]}
+					// 2. Raw string from Meilisearch's {{text}} template
+					let inputs: string | string[];
+					if (typeof body === "string") {
+						// Meilisearch sends raw string with {{text}} template
+						inputs = body;
+					} else if (body.input) {
+						// Standard format with input field
+						inputs = body.input;
+					} else {
 						return new Response(
 							JSON.stringify({ error: "Missing input field" }),
 							{
